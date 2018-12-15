@@ -1,0 +1,87 @@
+#---
+#---EXFOR Standard Output---
+#=============================================================================
+#DATASET        O2089014 
+#NOW            2017/03/16:11:17:50
+#SUBENT         O2089014   20121106
+#ENTRY          O2089      20131008
+#AUTHOR1        M.De napoli+
+#YEAR           2012
+#X4REF1         J,PMB,57,7651,2012
+#REFERENCE1     Jour: Physics in Medicine and Biology, Vol.57, p.7651 (2012)
+#REACTION       6-C-12(6-C-12,X)3-LI-7,,DA
+#D4REAC         R0#
+#C4Reaction     (6-C-12,X),DA
+#ReactionType   DA
+#Quantity       Differential c/s with respect to angle
+#IndVarFamCode  [0 2 4      ]
+#ExpectedUnits  [B/SR]
+#xVariables     2
+#+              Y = Y(X1,X2)
+#COLUMNS        5
+#HEADER         7           5           12
+!DATA        DATA-ERR    EN          ANG         ANG-ERR     
+!B/SR        B/SR        MEV/A       ADEG        ADEG        
+!Y.Value     Y.Err+-     X1.Value    X2.Value    X2.Err+-    
+!0.1         0.911       1.1         2.1         2.911       
+!variable    variable    const       variable    variable    
+!1.0         1.0         1000000.0   1.0         1.0         
+!B/SR        B/SR        EV          ADEG        ADEG        
+#DATA           22          5           12
+ 0.94        0.2         62.         2.2         0.4         
+ 0.75        0.17        62.         2.9         0.4         
+ 0.74        0.17        62.         3.5         0.4         
+ 0.59        0.15        62.         4.1         0.4         
+ 0.56        0.14        62.         4.9         0.4         
+ 0.446       0.058       62.         7.6         1.5         
+ 0.366       0.043       62.         8.2         1.5         
+ 0.432       0.046       62.         8.6         1.5         
+ 0.224       0.031       62.         11.1        1.5         
+ 0.166       0.02        62.         12.1        1.5         
+ 0.112       0.015       62.         12.8        1.5         
+ 0.078       0.01        62.         14.4        1.5         
+ 0.059       0.012       62.         15.2        1.5         
+ 0.049       0.007       62.         15.7        1.5         
+ 0.052       0.009       62.         16.4        1.5         
+ 0.045       0.007       62.         16.8        1.5         
+ 0.031       0.004       62.         17.2        1.5         
+ 0.027       0.004       62.         18.         1.5         
+ 0.028       0.007       62.         19.         1.5         
+ 0.018       0.003       62.         19.4        1.5         
+ 0.02        0.004       62.         20.6        1.5         
+ 0.014       0.002       62.         21.8        1.5         
+#ENDDATA        22          5
+#Legend         5           12
+#
+#COL-1         : Data        : variable    
+#+   Rank      : 0.1         : Y.Value     
+#+   Type      : 21          : 0.1         
+#+   Header    : DATA        : [Data: data]
+#+   Units     : B/SR        : [barns/steradian]
+#
+#COL-2         : Error       : variable    
+#+   Rank      : 0.911       : Y.Err+-     
+#+   Type      : 21          : 0.911       
+#+   Header    : DATA-ERR    : [Uncertainty: +-error]
+#+   Units     : B/SR        : [barns/steradian]
+#
+#COL-3         : Data        : constant    
+#+   Rank      : 1.1         : X1.Value    
+#+   Type      : 41          : 2.1         
+#+   Header    : EN          : [Incident energy: energy]
+#+   Units     : MEV/A       : [MeV per mass number]
+#+   BasicUnits: EV          : Conv.Factor=1.e+06
+#
+#COL-4         : Data        : variable    
+#+   Rank      : 2.1         : X2.Value    
+#+   Type      : 61          : 4.1         
+#+   Header    : ANG         : [Angle: angle] Angle of outgoing particle
+#+   Units     : ADEG        : [angular Degrees]
+#
+#COL-5         : Error       : variable    
+#+   Rank      : 2.911       : X2.Err+-    
+#+   Type      : 61          : 4.911       
+#+   Header    : ANG-ERR     : [Uncertainty: +-error]
+#+   Units     : ADEG        : [angular Degrees]
+#
+#ENDDATASET     O2089014 
