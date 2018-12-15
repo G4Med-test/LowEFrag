@@ -9,7 +9,7 @@
 /run/verbose 2
 #
 #
-/physics/setIonInelasticProcess incl
+/physics/setIonInelasticProcess bic
 #
 #/run/numberOfThreads 1
 #
@@ -21,7 +21,7 @@
 /process/inactivate ionElastic
 #
 #
-/treeManager/setFileName incl.root
+/treeManager/setFileName bic.root
 #
 /run/printProgress 10000
 #
