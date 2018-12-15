@@ -42,7 +42,7 @@ target_link_libraries(Hadr03 ${Geant4_LIBRARIES} )
 # relies on these scripts being in the current working directory.
 #
 set(Hadr03_SCRIPTS
-  debug.mac vis.mac incl.mac
+  debug.mac vis.mac incl.mac bic.mac
   )
 
 foreach(_script ${Hadr03_SCRIPTS})

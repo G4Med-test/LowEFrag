@@ -36,7 +36,8 @@ void TreeManager::Book()
 { 
   G4AnalysisManager* manager = G4AnalysisManager::Instance();
   
-  manager->SetVerboseLevel(2);
+  manager->SetVerboseLevel(1);
+  // manager->SetNtupleMerging(true);
   G4String fileName = TreeManagerHelper::Instance()->GetOutFileName();
   
   G4cout<<"Opening outputfile: "<<fileName<<G4endl;

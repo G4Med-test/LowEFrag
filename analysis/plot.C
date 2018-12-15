@@ -26,10 +26,13 @@ TChain *qmd_tree  = nullptr;
 
 Double_t cs =1051.9; //mb  (total inelastic cross section)
 
-Int_t nPrim_bic = 100000;
-Int_t nPrim_incl= 100000;
-Int_t nPrim_qmd = 100000;
+Int_t nPrim_bic = 1000000;
+Int_t nPrim_incl= 1000000;
+Int_t nPrim_qmd = 1000000;
+
 bool initialized = false;
+
+const int nThreads = 10;
 
 void init();
 std::string my_to_string(const double dbl);
@@ -50,7 +53,6 @@ void init()
   gStyle->SetPadBorderMode(0);
   gStyle->SetFrameBorderMode(0);
 
-  const int nThreads = 8;
   
   std::vector<std::string> inclfiles;
   for(int i=0; i<nThreads; i++)
@@ -294,7 +296,7 @@ void plotAll(const int wantedZ)
   double yAx_min ;
 
   double lxm=-1., hxm=-1.;
-  double lym=4.e-4, hym=5.e+2;
+  double lym=4.e-4, hym=5.e+3;
   
   
   for(size_t i=0;i<As.size(); i++)
