@@ -1,9 +1,7 @@
 #----------------------------------------------------------------------------
 # Setup the project
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-project(Hadr03 
-  DESCRIPTION "Geant4 validation against fragmentation data"
-  LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+project(Hadr03 CXX)
 
 #----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
@@ -60,4 +58,4 @@ endforeach()
 #
 install(TARGETS Hadr03 DESTINATION bin)
 
-add_subdirectory(analysis)
+# add_subdirectory(analysis)
