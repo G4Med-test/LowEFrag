@@ -17,7 +17,7 @@
 
 using namespace std;
 
-std::string path = "../build";
+std::string path = "../build/";
 std::string expDataDir = "./expData/";
 
 TChain *bic_tree  = nullptr;
@@ -26,9 +26,9 @@ TChain *qmd_tree  = nullptr;
 
 Double_t cs =1051.9; //mb  (total inelastic cross section)
 
-Int_t nPrim_bic = 1000;
-Int_t nPrim_incl= 1000;
-Int_t nPrim_qmd = 1000;
+Int_t nPrim_bic = 100000;
+Int_t nPrim_incl= 100000;
+Int_t nPrim_qmd = 100000;
 bool initialized = false;
 
 void init();
@@ -63,6 +63,19 @@ void init()
       std::string file = path+inclfiles[i];
       std::cout << "adding file: "<< file <<std::endl;
       incl_tree->AddFile(file.c_str());
+    }
+
+  std::vector<std::string> bicfiles;
+  for(int i=0; i<nThreads; i++)
+    {
+      bicfiles.push_back("bic_t"+my_to_string(i)+".root");      
+    }
+  bic_tree = new TChain("tree","tree");
+  for (size_t i=0; i<bicfiles.size(); i++)
+    {
+      std::string file = path+bicfiles[i];
+      std::cout << "adding file: "<< file <<std::endl;
+      bic_tree->AddFile(file.c_str());
     }
   
 }
