@@ -65,6 +65,8 @@ void TreeManager::Book()
 
 void TreeManager::FillSecondaries(const G4int A, const G4int Z, const G4double Ek, const G4double theta)
 {
+  if(A==0) return;
+  if(Z==0) return;
 
   G4AnalysisManager* manager = G4AnalysisManager::Instance();
   manager -> FillNtupleDColumn(fTupleid, fAid, A);

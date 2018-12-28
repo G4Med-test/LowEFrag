@@ -51,6 +51,7 @@
 #include "G4IonINCLXXPhysics.hh"
 #include "G4IonBinaryCascadePhysics.hh"
 #include "G4IonPhysicsPHP.hh"
+#include "G4IonQMDPhysics.hh"
 
 // particles
 
@@ -120,6 +121,10 @@ void PhysicsList::AddPhysicsList(const G4String& name)
     {
       hadronPhys.push_back(new G4IonBinaryCascadePhysics(verb));
       hadronPhys.push_back(new G4HadronPhysicsQGSP_BIC_HP(verb));
+    }
+  else if (name == "qmd")
+    {
+      hadronPhys.push_back(new G4IonQMDPhysics(verb));
     }
   else if (name == "incl")
     {

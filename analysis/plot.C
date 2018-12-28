@@ -79,6 +79,19 @@ void init()
       std::cout << "adding file: "<< file <<std::endl;
       bic_tree->AddFile(file.c_str());
     }
+
+  std::vector<std::string> qmdfiles;
+  for(int i=0; i<nThreads; i++)
+    {
+      qmdfiles.push_back("qmd_t"+my_to_string(i)+".root");      
+    }
+  qmd_tree = new TChain("tree","tree");
+  for (size_t i=0; i<qmdfiles.size(); i++)
+    {
+      std::string file = path+qmdfiles[i];
+      std::cout << "adding file: "<< file <<std::endl;
+      qmd_tree->AddFile(file.c_str());
+    }
   
 }
  
