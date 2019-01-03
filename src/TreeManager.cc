@@ -1,5 +1,7 @@
 #include "TreeManager.hh"
 #include "TreeManagerHelper.hh"
+#include "globals.hh"
+#include "G4SystemOfUnits.hh"
 
 TreeManager* TreeManager::instance = nullptr;
 
@@ -67,6 +69,8 @@ void TreeManager::FillSecondaries(const G4int A, const G4int Z, const G4double E
 {
   if(A==0) return;
   if(Z==0) return;
+  if(theta<1.7) return;
+  if(theta>23.4) return;  
 
   G4bool toBeSaved=false;
   std::vector<int> As = {1, 2, 3, 4, 6, 7, 7, 9, 10, 11};
