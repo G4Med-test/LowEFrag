@@ -68,12 +68,24 @@ void TreeManager::FillSecondaries(const G4int A, const G4int Z, const G4double E
   if(A==0) return;
   if(Z==0) return;
 
-  G4AnalysisManager* manager = G4AnalysisManager::Instance();
-  manager -> FillNtupleDColumn(fTupleid, fAid, A);
-  manager -> FillNtupleDColumn(fTupleid, fZid, Z);
-  manager -> FillNtupleDColumn(fTupleid, fEkid, Ek);
-  manager -> FillNtupleDColumn(fTupleid, fThetaid, theta);  
-  manager -> AddNtupleRow(fTupleid);  
+  G4bool toBeSaved=false;
+  std::vector<int> As = {1, 2, 3, 4, 6, 7, 7, 9, 10, 11};
+  std::vector<int> Zs = {1, 1, 1, 2, 3, 3, 4, 4,  5,  5};
+  for(size_t i=0; i<As.size(); i++)
+    {
+      if(A==As[i] && Z==Zs[i])
+	toBeSaved=true;
+    }
+
+  if(toBeSaved)
+    {
+      G4AnalysisManager* manager = G4AnalysisManager::Instance();
+      manager -> FillNtupleDColumn(fTupleid, fAid, A);
+      manager -> FillNtupleDColumn(fTupleid, fZid, Z);
+      manager -> FillNtupleDColumn(fTupleid, fEkid, Ek);
+      manager -> FillNtupleDColumn(fTupleid, fThetaid, theta);  
+      manager -> AddNtupleRow(fTupleid);  
+    }
 }
  
 void TreeManager::Finish() 
