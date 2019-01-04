@@ -33,6 +33,7 @@
 #include "SteppingAction.hh"
 #include "SteppingVerbose.hh"
 #include "DetectorConstruction.hh"
+#include "HistoManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -50,7 +51,9 @@ ActionInitialization::~ActionInitialization()
 
 void ActionInitialization::BuildForMaster() const
 {
-  RunAction* runAction = new RunAction(fDetector, 0);
+  HistoManager*  histo = new HistoManager();
+
+  RunAction* runAction = new RunAction(fDetector, 0, histo);
   SetUserAction(runAction);
 }
 
@@ -58,13 +61,15 @@ void ActionInitialization::BuildForMaster() const
 
 void ActionInitialization::Build() const
 {
+  HistoManager*  histo = new HistoManager();
+  
   PrimaryGeneratorAction* primary = new PrimaryGeneratorAction(-fDetector->GetSize()/2);
   SetUserAction(primary);
     
-  RunAction* runAction = new RunAction(fDetector, primary );
+  RunAction* runAction = new RunAction(fDetector, primary, histo);
   SetUserAction(runAction);
   
-  SteppingAction* steppingAction = new SteppingAction();
+  SteppingAction* steppingAction = new SteppingAction(histo);
   SetUserAction(steppingAction);
 }  
 

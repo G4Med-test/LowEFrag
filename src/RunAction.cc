@@ -35,7 +35,7 @@
 #include "RunMessenger.hh"
 #include "DetectorConstruction.hh"
 #include "PrimaryGeneratorAction.hh"
-#include "TreeManager.hh"
+#include "HistoManager.hh"
 
 #include "G4Run.hh"
 #include "G4UnitsTable.hh"
@@ -46,11 +46,12 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-RunAction::RunAction(DetectorConstruction* det, PrimaryGeneratorAction* prim)
+RunAction::RunAction(DetectorConstruction* det, PrimaryGeneratorAction* prim, HistoManager* histo)
   : G4UserRunAction(),
     fDetector(det), fPrimary(prim), fRun(0),
     //    fHistoManager(0),
     fRunMessenger(0),
+    fHistoManager(histo),
     fPrint(true)    
 {
   // fHistoManager = new HistoManager();
@@ -94,7 +95,7 @@ void RunAction::BeginOfRunAction(const G4Run*)
   // if ( analysisManager->IsActive() ) {
   //   analysisManager->OpenFile();
   // }
-  TreeManager::Instance()->Book();
+  fHistoManager->Book();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -109,7 +110,7 @@ void RunAction::EndOfRunAction(const G4Run*)
   //   analysisManager->Write();
   //   analysisManager->CloseFile();
   // }
-  TreeManager::Instance()->Finish();
+  fHistoManager->Finish();
   
   // show Rndm status
   if (isMaster) G4Random::showEngineStatus();

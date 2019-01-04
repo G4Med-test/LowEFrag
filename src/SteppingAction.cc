@@ -32,17 +32,22 @@
 
 #include "SteppingAction.hh"
 #include "Run.hh"
-//#include "HistoManager.hh"
-#include "TreeManager.hh"
+#include "HistoManager.hh"
+//#include "TreeManager.hh"
 
 #include "G4ParticleTypes.hh"
 #include "G4RunManager.hh"
 #include "G4HadronicProcess.hh"
-                           
+
+#include "G4HadronicProcessStore.hh"
+#include "G4SystemOfUnits.hh"
+#include "G4UnitsTable.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-SteppingAction::SteppingAction()
-: G4UserSteppingAction()
+SteppingAction::SteppingAction(HistoManager* histo)
+  : G4UserSteppingAction(),
+    fHistoManager(histo)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -60,9 +65,19 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   // count processes
   // 
   const G4StepPoint* endPoint = aStep->GetPostStepPoint();
-  G4VProcess* process   = 
-                   const_cast<G4VProcess*>(endPoint->GetProcessDefinedStep());
+  G4VProcess* process = const_cast<G4VProcess*>(endPoint->GetProcessDefinedStep());                 
   run->CountProcesses(process);
+  G4HadronicProcessStore* store = G4HadronicProcessStore::Instance();
+  G4Material* material = aStep->GetPostStepPoint()->GetMaterial();
+  const G4Element* element = material->GetElement(0);
+  G4ParticleDefinition* particle = aStep->GetTrack()->GetDefinition();
+  G4double Ekin = aStep->GetTrack()->GetKineticEnergy();
+  G4double xs1 = store->GetCrossSectionPerVolume(particle,Ekin,process,material);
+  G4double xs2 = store->GetCrossSectionPerAtom(particle,Ekin,process,element,material);
+
+  // G4cout<<"number of elements: "<<material->GetNumberOfElements()<<G4endl;
+  // G4cout<<"Process: "<<process->GetProcessName()<<" xs: "<<xs2/CLHEP::millibarn<<G4endl;
+  // G4cout<<G4BestUnit(xs2, "Surface")<<G4endl;
   
   // check that an real interaction occured (eg. not a transportation)
   G4StepStatus stepStatus = endPoint->GetStepStatus();
@@ -82,7 +97,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   
   //initialisation of the nuclear channel identification
   //
-  G4ParticleDefinition* particle = aStep->GetTrack()->GetDefinition();
   G4String partName = particle->GetParticleName();
   G4String nuclearChannel = partName;
   G4HadronicProcess* hproc = dynamic_cast<G4HadronicProcess*>(process);
@@ -96,7 +110,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   //scattered primary particle (if any)
   //
   // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  TreeManager* analysisManager = TreeManager::Instance();
 
   if (aStep->GetTrack()->GetTrackStatus() == fAlive) {
     G4double energy = endPoint->GetKineticEnergy();      
@@ -130,7 +143,11 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 	{
 	  ExcitationE = ((G4Ions*)particle)->GetExcitationEnergy();
 	}
-      analysisManager->FillSecondaries(A, Z, energy/CLHEP::MeV, momentumDirection.theta()/CLHEP::degree);
+      fHistoManager->FillSecondaries(A, Z,
+				     energy/CLHEP::MeV,
+				     momentumDirection.theta()/CLHEP::degree);
+				       // ExcitationE/CLHEP::eV,
+				       // xs1/CLHEP::millibarn);      
       
       //energy-momentum balance
       G4ThreeVector momentum = (*secondary)[lp]->GetMomentum();

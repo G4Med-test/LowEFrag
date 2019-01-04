@@ -219,7 +219,7 @@ TObjArray* cfr_data_mc(const Int_t A,const Int_t Z,
       hincl->Scale(sf_incl);
       hincl->SetLineColor(kBlue);
       hincl->SetLineWidth(2);
-      hincl->Draw("same");
+      hincl->Draw("C same");
     }
   
   if(qmd_tree)
@@ -228,7 +228,7 @@ TObjArray* cfr_data_mc(const Int_t A,const Int_t Z,
       hqmd->Scale(sf_qmd);
       hqmd->SetLineColor(kRed);
       hqmd->SetLineWidth(2);
-      hqmd->Draw("same");
+      hqmd->Draw("C same");
     }
 
   bool legLeft = false;
