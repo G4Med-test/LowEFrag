@@ -77,13 +77,13 @@ void HistoManager::Book()
   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi7_4.9",{  17, 9.14286, 86.8571}));
   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi7_7.6",{  17, 9.14286, 86.8571}));
   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi7_14.4",{ 17, 9.14286, 86.8571}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi7_18",{   9.14286, 77.7143}));	
+  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi7_18",{   15, 9.14286, 77.7143}));	
   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi7_21.8",{ 13, 9.14286, 68.5714}));
   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_2.2",{  18, 9.14286, 91.4286}));
   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_4.9",{  17, 9.14286, 86.8571}));
   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_7.6",{  16, 9.14286, 82.2857}));
   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_14.4",{ 16, 9.14286, 82.2857}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_18",{   9.14286, 82.2857}));	
+  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_18",{   16, 9.14286, 82.2857}));	
   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_21.8",{ 13, 9.14286, 68.5714}));
   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe9_2.2",{  17, 8, 76}));		
   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe9_3.5",{  17, 8, 76}));		
@@ -150,9 +150,9 @@ void HistoManager::Book()
 						 thisHistoProperties[1],
 						 thisHistoProperties[2]);
 	  G4cout<<"Creating histogram "<<hname<<" with id: "<<thisId
-		<<"n bin: "<< thisHistoProperties[0]
-		<<"x min: "<< thisHistoProperties[1]
-		<<"x max: "<< thisHistoProperties[2]	    	    
+		<<" n bin: "<< thisHistoProperties[0]
+		<<" x min: "<< thisHistoProperties[1]
+		<<" x max: "<< thisHistoProperties[2]	    	    
 		<<G4endl;
 	  HistoIds.insert(std::make_pair(hname,thisId));
 	}//end loop on angles
@@ -215,13 +215,13 @@ void HistoManager::FillSecondaries(const G4int A, const G4int Z, const G4double 
       if( (theta >= (angs[j]-accept[j])) && (theta <= (angs[j]+accept[j])) )
 	{
 	  std::string hname = "h"+isotopename+"_"+my_to_string(angs[j]);
-	  G4cout<<"Trying to fill"<<hname<<G4endl;
+	  // G4cout<<"Trying to fill"<<hname<<G4endl;
 	  if(HistoIds.find(hname) != HistoIds.end())
 	    {
 	      int thisId = HistoIds.at(hname);
 	      G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	      analysisManager->FillH1(thisId, Ek/A, 1.);
-	      G4cout<<"Filling "<<hname<<G4endl;	      
+	      // G4cout<<"Filling "<<hname<<G4endl;	      
 	    }
 	}//end check in acceptance	  
     }//end loop on angles

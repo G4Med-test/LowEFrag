@@ -21,7 +21,7 @@
 /process/inactivate ionElastic
 #
 #
-/treeManager/setFileName incl.root
+/histoManager/setFileName incl
 #
 /run/printProgress 10000
 #

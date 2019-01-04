@@ -50,7 +50,7 @@
 #include "G4UIExecutive.hh"
 #include "G4VisExecutive.hh"
 
-#include "TreeManagerHelper.hh"
+#include "HistoManagerHelper.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -75,7 +75,7 @@ int main(int argc,char** argv) {
   G4RunManager* runManager = new G4RunManager;
 #endif
 
-  TreeManagerHelper::Instance();
+  HistoManagerHelper::Instance();
   
   //set mandatory initialization classes
   DetectorConstruction* det = new DetectorConstruction;

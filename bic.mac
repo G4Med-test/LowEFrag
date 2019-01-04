@@ -21,7 +21,7 @@
 /process/inactivate ionElastic
 #
 #
-/treeManager/setFileName bic.root
+/histoManager/setFileName bic
 #
 /run/printProgress 10000
 #
