@@ -1,6 +1,8 @@
 #include "HistoManager.hh"
 #include "HistoManagerHelper.hh"
 #include <sstream>
+#include <array>
+#include <string>
 
 using HistoPropertiesType = std::array<float, 3>;
 
@@ -48,62 +50,62 @@ void HistoManager::Book()
   std::vector<double> angs;  
   std::vector<double> accept;
 
-  std::map<std::string, HistoPropertiesType> HistoProperites;
-   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hH1_11.4",{  18, 0, 180}) );  					 
-   HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hH1_14.4",{  18, 0, 180}) );
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hH1_17.2",{  16, 0, 160}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hH1_19.4",{  15, 0, 150}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hH2_11.4",{  19, 7, 140}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hH2_14.4",{  18, 7, 133}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hH2_17.2",{  18, 0, 126}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hH2_19.4",{  18, 0, 126}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hH3_11.4",{  18, 0, 126.667}));	
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hH3_14.4",{  17, 0, 113.333}));	
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hH3_17.2",{  15, 0, 100}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hH3_19.4",{  13, 0, 93.3333}));	
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hHe4_2.2",{  19, 5, 100}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hHe4_4.9",{  19, 5, 100}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hHe4_7.6",{  19, 5, 100}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hHe4_14.4",{ 19, 5, 100}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hHe4_18",{   19, 5, 100}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hHe4_21.8",{ 19, 5, 100}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi6_2.2",{  18, 5, 95}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi6_4.9",{  18, 5, 95}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi6_7.6",{  18, 5, 95}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi6_14.4",{ 18, 5, 95}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi6_18",{   17, 5, 90}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi6_21.8",{ 14, 5, 75}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi7_2.2",{  17, 9.14286, 86.8571}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi7_4.9",{  17, 9.14286, 86.8571}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi7_7.6",{  17, 9.14286, 86.8571}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi7_14.4",{ 17, 9.14286, 86.8571}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi7_18",{   15, 9.14286, 77.7143}));	
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hLi7_21.8",{ 13, 9.14286, 68.5714}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_2.2",{  18, 9.14286, 91.4286}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_4.9",{  17, 9.14286, 86.8571}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_7.6",{  16, 9.14286, 82.2857}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_14.4",{ 16, 9.14286, 82.2857}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_18",{   16, 9.14286, 82.2857}));	
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe7_21.8",{ 13, 9.14286, 68.5714}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe9_2.2",{  17, 8, 76}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe9_3.5",{  17, 8, 76}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe9_4.9",{  17, 8, 76}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe9_7.6",{  17, 8, 76}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe9_11.1",{ 17, 8, 76}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hBe9_14.4",{ 17, 8, 76}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hB10_2.2",{  17, 8, 76}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hB10_3.5",{  17, 8, 76}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hB10_4.9",{  17, 8, 76}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hB10_7.6",{  17, 8, 76}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hB10_11.1",{ 17, 8, 76}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hB10_14.4",{ 16, 8, 72}));		
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hB11_2.2",{  16, 11.4545, 72.5455}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hB11_3.5",{  17, 7.63636, 72.5455}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hB11_4.9",{  17, 7.63636, 72.5455}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hB11_7.6",{  17, 7.63636, 72.5455}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hB11_11.1",{ 17, 7.63636, 72.5455}));
-  HistoProperites.insert(std::make_pair<std::string, HistoPropertiesType>("hB11_14.4",{ 15, 7.63636, 68.7273}));
-  
+  std::map<std::string, HistoPropertiesType> HistoProperites{
+  {"hH1_11.4",{  18, 0, 180}},
+  {"hH1_14.4",{  18, 0, 180}},
+  {"hH1_17.2",{  16, 0, 160}},		
+  {"hH1_19.4",{  15, 0, 150}},		
+  {"hH2_11.4",{  19, 7, 140}},		
+  {"hH2_14.4",{  18, 7, 133}},		
+  {"hH2_17.2",{  18, 0, 126}},		
+  {"hH2_19.4",{  18, 0, 126}},		
+  {"hH3_11.4",{  18, 0, 126.667}},	
+  {"hH3_14.4",{  17, 0, 113.333}},	
+  {"hH3_17.2",{  15, 0, 100}},		
+  {"hH3_19.4",{  13, 0, 93.3333}},	
+  {"hHe4_2.2",{  19, 5, 100}},		
+  {"hHe4_4.9",{  19, 5, 100}},		
+  {"hHe4_7.6",{  19, 5, 100}},		
+  {"hHe4_14.4",{ 19, 5, 100}},		
+  {"hHe4_18",{   19, 5, 100}},		
+  {"hHe4_21.8",{ 19, 5, 100}},		
+  {"hLi6_2.2",{  18, 5, 95}},		
+  {"hLi6_4.9",{  18, 5, 95}},		
+  {"hLi6_7.6",{  18, 5, 95}},		
+  {"hLi6_14.4",{ 18, 5, 95}},		
+  {"hLi6_18",{   17, 5, 90}},		
+  {"hLi6_21.8",{ 14, 5, 75}},		
+  {"hLi7_2.2",{  17, 9.14286, 86.8571}},
+  {"hLi7_4.9",{  17, 9.14286, 86.8571}},
+  {"hLi7_7.6",{  17, 9.14286, 86.8571}},
+  {"hLi7_14.4",{ 17, 9.14286, 86.8571}},
+  {"hLi7_18",{   15, 9.14286, 77.7143}},	
+  {"hLi7_21.8",{ 13, 9.14286, 68.5714}},
+  {"hBe7_2.2",{  18, 9.14286, 91.4286}},
+  {"hBe7_4.9",{  17, 9.14286, 86.8571}},
+  {"hBe7_7.6",{  16, 9.14286, 82.2857}},
+  {"hBe7_14.4",{ 16, 9.14286, 82.2857}},
+  {"hBe7_18",{   16, 9.14286, 82.2857}},	
+  {"hBe7_21.8",{ 13, 9.14286, 68.5714}},
+  {"hBe9_2.2",{  17, 8, 76}},		
+  {"hBe9_3.5",{  17, 8, 76}},		
+  {"hBe9_4.9",{  17, 8, 76}},		
+  {"hBe9_7.6",{  17, 8, 76}},		
+  {"hBe9_11.1",{ 17, 8, 76}},		
+  {"hBe9_14.4",{ 17, 8, 76}},		
+  {"hB10_2.2",{  17, 8, 76}},		
+  {"hB10_3.5",{  17, 8, 76}},		
+  {"hB10_4.9",{  17, 8, 76}},		
+  {"hB10_7.6",{  17, 8, 76}},		
+  {"hB10_11.1",{ 17, 8, 76}},		
+  {"hB10_14.4",{ 16, 8, 72}},		
+  {"hB11_2.2",{  16, 11.4545, 72.5455}},
+  {"hB11_3.5",{  17, 7.63636, 72.5455}},
+  {"hB11_4.9",{  17, 7.63636, 72.5455}},
+  {"hB11_7.6",{  17, 7.63636, 72.5455}},
+  {"hB11_11.1",{ 17, 7.63636, 72.5455}},
+  {"hB11_14.4",{ 15, 7.63636, 68.7273}} };
+
   for(size_t i=0; i<As.size(); i++)
     {
       std::string isotopename="";
