@@ -60,8 +60,8 @@ class Run : public G4Run
     void CountGamma(G4int);
         
     virtual void Merge(const G4Run*);      
-    void EndOfRun(G4bool); 
-   
+    void EndOfRun(G4bool);   
+
   private:
     struct ParticleData {
      ParticleData()

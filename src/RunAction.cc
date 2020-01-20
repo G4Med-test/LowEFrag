@@ -82,7 +82,7 @@ void RunAction::BeginOfRunAction(const G4Run*)
   if (isMaster) G4Random::showEngineStatus();
     
   // keep run condition
-  if (fPrimary) { 
+  if (fPrimary && !isMaster) { 
     G4ParticleDefinition* particle 
       = fPrimary->GetParticleDefinition();
     G4double energy = fPrimary->GetParticleEnergy();
@@ -102,8 +102,12 @@ void RunAction::BeginOfRunAction(const G4Run*)
 
 void RunAction::EndOfRunAction(const G4Run*)
 {
-  if (isMaster) fRun->EndOfRun(fPrint);    
-  
+  if (isMaster) 
+    {
+      fRun->EndOfRun(fPrint);    
+      G4double cs =fRun->GetCrossSection();
+      G4double nprim = fRun->GetNumberOfEvent();
+    }
   // //save histograms      
   // G4TreeManager* analysisManager = G4TreeManager::Instance();
   // if ( analysisManager->IsActive() ) {
