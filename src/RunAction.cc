@@ -105,8 +105,8 @@ void RunAction::EndOfRunAction(const G4Run*)
   if (isMaster) 
     {
       fRun->EndOfRun(fPrint);    
-      G4double cs =fRun->GetCrossSection();
-      G4double nprim = fRun->GetNumberOfEvent();
+      // G4double cs =fRun->GetCrossSection();
+      // G4double nprim = fRun->GetNumberOfEvent();
     }
   // //save histograms      
   // G4TreeManager* analysisManager = G4TreeManager::Instance();

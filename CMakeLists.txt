@@ -2,7 +2,7 @@
 # Setup the project
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 set (CMAKE_CXX_STANDARD 11)
-project(Hadr03 CXX)
+project(G4LowEFrag CXX)
 
 #----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
@@ -33,20 +33,20 @@ file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-add_executable(Hadr03 Hadr03.cc ${sources} ${headers})
-target_include_directories(Hadr03 PUBLIC include)
-target_link_libraries(Hadr03 ${Geant4_LIBRARIES} )
+add_executable(G4LowEFrag G4LowEFrag.cc ${sources} ${headers})
+target_include_directories(G4LowEFrag PUBLIC include)
+target_link_libraries(G4LowEFrag ${Geant4_LIBRARIES} )
 
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
-# build Hadr03. This is so that we can run the executable directly because it
+# build G4LowEFrag. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
-set(Hadr03_SCRIPTS
-  debug.mac vis.mac incl.mac bic.mac
+set(G4LowEFrag_SCRIPTS
+  test.mac debug.mac vis.mac incl.mac bic.mac
   )
 
-foreach(_script ${Hadr03_SCRIPTS})
+foreach(_script ${G4LowEFrag_SCRIPTS})
   configure_file(
     ${PROJECT_SOURCE_DIR}/${_script}
     ${PROJECT_BINARY_DIR}/${_script}
@@ -57,6 +57,6 @@ endforeach()
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
 #
-install(TARGETS Hadr03 DESTINATION bin)
+install(TARGETS G4LowEFrag DESTINATION bin)
 
 # add_subdirectory(analysis)
