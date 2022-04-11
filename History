@@ -1,0 +1,12 @@
+############################
+####### History File #######
+############################
+
+17.11.2021: S. Guatelli LowEFrag-V10-07-01
+- G4AnalysisManager.hh substitutes g4root.hh
+- Default analysis output file set to root file
+- Removed the delete analysis in the Histo Manager (done buy the RunManager) 
+
+15.10.2021: S. Guatelli LowEFrag-V10-07-00
+- Migration to Geant4 V11. G4EmExtraPhysics added, G4GammaNuclearprocess removed.
+removed warnings during compilation

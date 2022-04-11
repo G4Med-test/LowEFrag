@@ -53,6 +53,9 @@ class SteppingAction : public G4UserSteppingAction
   private:
     std::map<G4ParticleDefinition*,G4int> fParticleFlag;
   HistoManager*              fHistoManager;
+  G4double ExcitationE; 
+  G4double xs1;
+  G4double xs2;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

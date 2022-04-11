@@ -48,7 +48,11 @@
 SteppingAction::SteppingAction(HistoManager* histo)
   : G4UserSteppingAction(),
     fHistoManager(histo)
-{ }
+{ 
+ExcitationE = 0.;
+xs1=0;
+xs2=0;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -72,8 +76,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   const G4Element* element = material->GetElement(0);
   G4ParticleDefinition* particle = aStep->GetTrack()->GetDefinition();
   G4double Ekin = aStep->GetTrack()->GetKineticEnergy();
-  G4double xs1 = store->GetCrossSectionPerVolume(particle,Ekin,process,material);
-  G4double xs2 = store->GetCrossSectionPerAtom(particle,Ekin,process,element,material);
+  xs1 = store->GetCrossSectionPerVolume(particle,Ekin,process,material);
+  xs2 = store->GetCrossSectionPerAtom(particle,Ekin,process,element,material);
 
   // G4cout<<"number of elements: "<<material->GetNumberOfElements()<<G4endl;
   // G4cout<<"Process: "<<process->GetProcessName()<<" xs: "<<xs2/CLHEP::millibarn<<G4endl;
@@ -133,7 +137,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
       G4double energy = (*secondary)[lp]->GetKineticEnergy();
       G4int A = particle->GetAtomicMass();
       G4int Z =  particle->GetAtomicNumber();
-      G4double ExcitationE = 0.;
+      
       G4ThreeVector momentumDirection = (*secondary)[lp]->GetMomentumDirection();
       
       run->ParticleCount(name,energy);

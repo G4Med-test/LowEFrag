@@ -50,7 +50,6 @@ RunAction::RunAction(DetectorConstruction* det, PrimaryGeneratorAction* prim, Hi
   : G4UserRunAction(),
     fDetector(det), fPrimary(prim), fRun(0),
     //    fHistoManager(0),
-    fRunMessenger(0),
     fHistoManager(histo),
     fPrint(true)    
 {
@@ -82,7 +81,7 @@ void RunAction::BeginOfRunAction(const G4Run*)
   if (isMaster) G4Random::showEngineStatus();
     
   // keep run condition
-  if (fPrimary && !isMaster) { 
+  if (fPrimary) { 
     G4ParticleDefinition* particle 
       = fPrimary->GetParticleDefinition();
     G4double energy = fPrimary->GetParticleEnergy();
@@ -102,12 +101,8 @@ void RunAction::BeginOfRunAction(const G4Run*)
 
 void RunAction::EndOfRunAction(const G4Run*)
 {
-  if (isMaster) 
-    {
-      fRun->EndOfRun(fPrint);    
-      // G4double cs =fRun->GetCrossSection();
-      // G4double nprim = fRun->GetNumberOfEvent();
-    }
+  if (isMaster) fRun->EndOfRun(fPrint);    
+  
   // //save histograms      
   // G4TreeManager* analysisManager = G4TreeManager::Instance();
   // if ( analysisManager->IsActive() ) {

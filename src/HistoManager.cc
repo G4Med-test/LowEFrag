@@ -6,22 +6,6 @@
 
 using HistoPropertiesType = std::array<float, 3>;
 
-std::string GetIsotopeName(const G4int Z)
-{
-  std::string isotopename="";
-  if(Z==1)
-    isotopename="H";
-  else if(Z==2)
-    isotopename="He";
-  else if(Z==3)
-    isotopename="Li";
-  else if(Z==4)
-    isotopename="Be";  
-  else if(Z==5)
-    isotopename="B";
-  return isotopename;
-}
-
 std::string my_to_string(const double dbl)
 {
   std::ostringstream strs;
@@ -51,6 +35,7 @@ void HistoManager::Book()
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   // analysisManager->SetNtupleMerging(true);
   analysisManager->SetVerboseLevel(1);
+  analysisManager->SetDefaultFileType("root");
 
   G4String fileName = HistoManagerHelper::Instance()->GetOutFileName();
   
@@ -124,7 +109,17 @@ void HistoManager::Book()
 
   for(size_t i=0; i<As.size(); i++)
     {
-      std::string isotopename=GetIsotopeName(Zs[i]);
+      std::string isotopename="";
+      if(Zs[i]==1)
+	isotopename="H";
+      else if(Zs[i]==2)
+	isotopename="He";
+      else if(Zs[i]==3)
+	isotopename="Li";
+      else if(Zs[i]==4)
+	isotopename="Be";  
+      else if(Zs[i]==5)
+	isotopename="B";
       std::string isotopename2 = isotopename;
       isotopename+=my_to_string(As[i]);
       //   Be9                        B
@@ -181,11 +176,19 @@ void HistoManager::FillSecondaries(const G4int A, const G4int Z, const G4double 
   std::vector<double> angs;  
   std::vector<double> accept;
 
-  if(Z<1)
+  std::string isotopename="";
+  if(Z==1)
+    isotopename="H";
+  else if(Z==2)
+    isotopename="He";
+  else if(Z==3)
+    isotopename="Li";
+  else if(Z==4)
+    isotopename="Be";  
+  else if(Z==5)
+    isotopename="B";
+  else
     return;
-  if(Z>5)
-    return;
-  std::string isotopename=GetIsotopeName(Z);
   std::string isotopename2 = isotopename;
   isotopename+=my_to_string(A);
   //   Be9                        B
@@ -238,7 +241,7 @@ void HistoManager::Finish()
 
     G4cout << "\n----> Histograms saved\n" << G4endl;      
 
-    delete G4AnalysisManager::Instance();
+    //delete G4AnalysisManager::Instance();
     fOn = false;
    }
 }

@@ -46,7 +46,7 @@
 #include "G4HadronPhysicsFTFP_BERT.hh"
 
 #include "G4IonElasticPhysics.hh"
-
+#include "G4EmExtraPhysics.hh"
 #include "G4IonPhysics.hh"
 #include "G4IonINCLXXPhysics.hh"
 #include "G4IonBinaryCascadePhysics.hh"
@@ -101,6 +101,8 @@ void PhysicsList::AddPhysicsList(const G4String& name)
 
   // Ion Elastic scattering
   hadronPhys.push_back(new G4IonElasticPhysics(verb));
+  
+  hadronPhys.push_back(new G4EmExtraPhysics());
   
   if (verb>1) {
     G4cout << "PhysicsList::AddPhysicsList: <" << name << ">" << G4endl;

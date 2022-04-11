@@ -2,7 +2,7 @@
 #define HISTO_MANAGER_HH
 
 #include "globals.hh"
-#include "g4root.hh"
+#include "G4AnalysisManager.hh"
 //#include "g4csv.hh"
 //#include "g4xml.hh"
 

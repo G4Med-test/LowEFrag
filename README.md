@@ -1,8 +1,5 @@
 # G4LowEFrag
-Validation of Geant4 against nuclear fragmentation data, included in the G4-Med tests
-https://geant4.web.cern.ch/node/1875
-
-Author: Carlo Mancini Terracciano (carlo.mancini-terracciano@uniroma1.it)
+Validation of Geant4 against nuclear fragmentation data
 
 Update of the validation in:
 C. Mancini-Terracciano et al. IFMBE Proceedings,
