@@ -414,7 +414,7 @@ void plotAll(const int wantedZ)
 		  yAx->SetLabelSize(0.08);
 		  yAx2->SetLabelSize(0.08);
 		}
-	      std::string reaction="^{12}C + ^{nat}C #rightarrow ^{"+my_to_string(As[i])+"}"+isotopename2+" at 62 MeV/n";
+	      std::string reaction="^{12}C + ^{12}C #rightarrow ^{"+my_to_string(As[i])+"}"+isotopename2+" at 62 MeV/n";
 	      gr->SetTitle(reaction.c_str());
 	      h1->SetTitle(reaction.c_str());
 	    }
