@@ -1,0 +1,31 @@
+Bootstrap: docker
+From: carlomt/geant4:11.2.2-almalinux9
+
+%labels
+    Author Carlo Mancini
+    Email mancinit@infn.it
+    Project LowEFrag
+    Description "Apptainer container for LowEFrag G4-Med test"
+
+%environment
+    export PATH=/opt/geant4/bin:$PATH
+    export LD_LIBRARY_PATH=/opt/geant4/lib:$LD_LIBRARY_PATH
+    export G4DATA_DIR=/opt/geant4/data
+    export G4INSTALL=/opt/geant4
+    export LOWEFRAG_HOME=/workspace
+
+%post
+    mkdir -p /workspace
+    cd /workspace
+
+    curl -L https://github.com/G4Med-test/LowEFrag/archive/refs/heads/master.tar.gz -o lowefrag.tar.gz
+    tar -xvzf lowefrag.tar.gz --strip-components=1
+    rm lowefrag.tar.gz
+
+    mkdir build && cd build
+    cmake ..
+    make -j$(nproc)
+
+%runscript
+    echo "Running LowEFrag simulation..."
+    /workspace/build/LowEFrag "$@"
