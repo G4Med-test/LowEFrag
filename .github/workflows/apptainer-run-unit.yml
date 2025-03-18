@@ -58,4 +58,9 @@ jobs:
       - name: Run the container
         run: |
           echo "Running container..."
-          singularity run -B /tmp/g4data:/opt/geant4/data LowEFrag.sif 
+          singularity run \
+          -B /tmp/g4data:/opt/geant4/data \
+          -B ${{ github.workspace }}:/workspace \
+          LowEFrag.sif /workspace/macro/unit.mac
+
+
