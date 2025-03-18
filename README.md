@@ -36,11 +36,7 @@ apptainer build LowEFrag.sif Apptainer.def
 
 ## 🚀 How to run the container
 
-```bash
-./LowEFrag.sif <macrofile>
-```
-
-If Geant4 datasets are located externally, mount them and set environment variables:
+Geant4 datasets are located externally, mount them:
 ```bash
 apptainer run   -B /path/to/geant4_data:/opt/geant4/data   LowEFrag.sif <macrofile>
 ```
