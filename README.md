@@ -14,3 +14,12 @@ Included in G4-Med:
 P. Arce et al. Med. Phys.
 vol. 48, iss. 1, pp. 19-56, Jan. 2021
 doi: 10.1002/mp.14226
+
+## How to build the container
+From the `containers/` directory, run:
+```bash
+apptainer build LowEFrag.sif Apptainer.def
+
+## How to run the container
+```bash
+./LowEFrag.sif <macrofile>
