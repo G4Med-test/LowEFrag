@@ -1,0 +1,36 @@
+name: Populate Geant4 Data Cache
+
+on:
+  workflow_dispatch:  # Lo puoi lanciare manualmente
+
+jobs:
+  populate-cache:
+    runs-on: ubuntu-latest
+    container:
+      image: carlomt/apptainer:1.3.2
+      options: --privileged
+
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Restore Geant4 data cache (if exists)
+        id: g4data-cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/g4data
+          key: geant4-data-v1
+
+      - name: Install Geant4 datasets if cache not found
+        if: steps.g4data-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p /tmp/g4data
+          singularity exec -B /tmp/g4data:/opt/geant4/data ${{ github.workspace }}/containers/LowEFrag.sif \
+            bash -c "geant4-config --install-datasets"
+
+      - name: Confirm completion
+        run: echo "Cache populated or already available. Done ✅"
