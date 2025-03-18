@@ -52,7 +52,6 @@ jobs:
         run: |
           mkdir -p /tmp/g4data
           cd /tmp/g4data
-          singularity run 
           singularity exec -B /tmp/g4data:/opt/geant4/data containers/LowEFrag.sif \
           bash -c "geant4-config --install-datasets"
 
