@@ -39,7 +39,7 @@ jobs:
 
       - name: Login to GHCR
         run: |
-          echo ${{ secrets.GHCR_PAT }} | singularity remote login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
+          echo ${{ secrets.GHCR_PAT }} | singularity registry login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
 
       - name: Push Container to GHCR
         run: |
