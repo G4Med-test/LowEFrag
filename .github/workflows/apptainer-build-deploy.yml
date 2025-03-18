@@ -43,4 +43,5 @@ jobs:
 
       - name: Push Container to GHCR
         run: |
+          repo_lower=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           singularity push containers/LowEFrag.sif oras://ghcr.io/${{ github.repository }}:${{ steps.set_tag.outputs.tag }}
