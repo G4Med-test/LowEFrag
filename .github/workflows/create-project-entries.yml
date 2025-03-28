@@ -5,7 +5,7 @@ on:
     workflows: ["apptainer-run-unit"]
     types:
       - completed
-  workflow_dispatch:  # <-- permette avvio manuale
+  workflow_dispatch:
 
 jobs:
   populate-project:
@@ -16,7 +16,8 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GH_PAT }}
       REPO: ${{ github.repository }}
-      PROJECT_NUMBER: 1  # Modifica con il tuo numero di Project
+      ORG: G4Med-test
+      PROJECT_NUMBER: 1  # confermato da te: https://github.com/orgs/G4Med-test/projects/1
 
     steps:
       - name: Checkout repo
@@ -37,22 +38,27 @@ jobs:
 
           TOKEN = os.getenv("GH_TOKEN")
           REPO = os.getenv("REPO")
-          PROJECT_NUMBER = os.getenv("PROJECT_NUMBER")
+          ORG = os.getenv("ORG")
+          PROJECT_NUMBER = int(os.getenv("PROJECT_NUMBER"))
           API_URL = "https://api.github.com/graphql"
           HEADERS = {"Authorization": f"Bearer {TOKEN}"}
 
           container_url = f"https://github.com/{REPO}/pkgs/container/{REPO.split('/')[1]}"
 
+          # Ottieni Project ID (organization-level)
           query_project = '''
-          query($owner: String!, $name: String!, $number: Int!) {
-            repository(owner: $owner, name: $name) {
+          query($org: String!, $number: Int!) {
+            organization(login: $org) {
               projectV2(number: $number) { id }
             }
           }'''
-          owner, name = REPO.split('/')
-          r = requests.post(API_URL, headers=HEADERS, json={"query": query_project, "variables": {"owner": owner, "name": name, "number": int(PROJECT_NUMBER)}})
-          project_id = r.json()["data"]["repository"]["projectV2"]["id"]
+          r = requests.post(API_URL, headers=HEADERS, json={
+              "query": query_project,
+              "variables": {"org": ORG, "number": PROJECT_NUMBER}
+          })
+          project_id = r.json()["data"]["organization"]["projectV2"]["id"]
 
+          # Ottieni IDs campi del Project
           query_fields = '''
           query($projectId: ID!) {
             node(id: $projectId) {
@@ -66,6 +72,7 @@ jobs:
           r = requests.post(API_URL, headers=HEADERS, json={"query": query_fields, "variables": {"projectId": project_id}})
           fields = {f["name"]: f["id"] for f in r.json()["data"]["node"]["fields"]["nodes"]}
 
+          # Ottieni opzioni Status
           query_status_opts = '''
           query($fieldId: ID!) {
             node(id: $fieldId) {
@@ -78,29 +85,34 @@ jobs:
           status_opts = {o["name"]: o["id"] for o in r.json()["data"]["node"]["options"]}
 
           macro_files = glob.glob("macro/*.mac")
-          repo_name = name
+          repo_name = REPO.split('/')[1]
 
           for file_path in macro_files:
               macro_name = os.path.basename(file_path)
               job_name = f"{repo_name}-{macro_name}"
               macro_url = f"https://raw.githubusercontent.com/{REPO}/main/macro/{macro_name}"
 
+              # Crea una nuova Issue
+              issue_title = f"Run macro {macro_name}"
+              issue_body = f"Job for macro {macro_name}"
+              r = requests.post(f"https://api.github.com/repos/{REPO}/issues", headers=HEADERS, json={
+                  "title": issue_title,
+                  "body": issue_body
+              })
+              issue_node_id = r.json()["node_id"]
+
+              # Aggiungi Issue al Project
               mutation_add = '''
               mutation($input: AddProjectV2ItemByIdInput!) {
                 addProjectV2ItemById(input: $input) {
                   item { id }
                 }
               }'''
-
-              issue_title = f"Run macro {macro_name}"
-              issue_body = f"Job for macro {macro_name}"
-              r = requests.post(f"https://api.github.com/repos/{REPO}/issues", headers=HEADERS, json={"title": issue_title, "body": issue_body})
-              issue_node_id = r.json()["node_id"]
-
               variables_add = {"input": {"projectId": project_id, "contentId": issue_node_id}}
               r = requests.post(API_URL, headers=HEADERS, json={"query": mutation_add, "variables": variables_add})
               item_id = r.json()["data"]["addProjectV2ItemById"]["item"]["id"]
 
+              # Funzione per impostare campi
               mutation_update = '''
               mutation($input: UpdateProjectV2ItemFieldValueInput!) {
                 updateProjectV2ItemFieldValue(input: $input) { projectV2Item { id } }
@@ -110,10 +122,12 @@ jobs:
                   vars = {"input": {"projectId": project_id, "itemId": item_id, "fieldId": field_id, "value": value}}
                   requests.post(API_URL, headers=HEADERS, json={"query": mutation_update, "variables": vars})
 
+              # Imposta i campi richiesti
               set_field(item_id, fields["Job name"], {"text": job_name})
               set_field(item_id, fields["Macro"], {"text": macro_url})
               set_field(item_id, fields["Container"], {"text": container_url})
               set_field(item_id, fields["Status"], {"singleSelectOptionId": status_opts["pending"]})
 
-              print(f"Added Project entry for {macro_name}")
+              print(f"✅ Added Project entry for {macro_name}")
+
           EOF
