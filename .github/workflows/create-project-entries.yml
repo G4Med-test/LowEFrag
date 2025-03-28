@@ -1,0 +1,119 @@
+name: Create Project Entries from Macros
+
+on:
+  workflow_run:
+    workflows: ["apptainer-run-unit"]
+    types:
+      - completed
+  workflow_dispatch:  # <-- permette avvio manuale
+
+jobs:
+  populate-project:
+    if: |
+      github.event_name == 'workflow_dispatch' || 
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_PAT }}
+      REPO: ${{ github.repository }}
+      PROJECT_NUMBER: 1  # Modifica con il tuo numero di Project
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Populate GitHub Project via Python
+        run: |
+          python <<EOF
+          import os, requests, glob
+
+          TOKEN = os.getenv("GH_TOKEN")
+          REPO = os.getenv("REPO")
+          PROJECT_NUMBER = os.getenv("PROJECT_NUMBER")
+          API_URL = "https://api.github.com/graphql"
+          HEADERS = {"Authorization": f"Bearer {TOKEN}"}
+
+          container_url = f"https://github.com/{REPO}/pkgs/container/{REPO.split('/')[1]}"
+
+          query_project = '''
+          query($owner: String!, $name: String!, $number: Int!) {
+            repository(owner: $owner, name: $name) {
+              projectV2(number: $number) { id }
+            }
+          }'''
+          owner, name = REPO.split('/')
+          r = requests.post(API_URL, headers=HEADERS, json={"query": query_project, "variables": {"owner": owner, "name": name, "number": int(PROJECT_NUMBER)}})
+          project_id = r.json()["data"]["repository"]["projectV2"]["id"]
+
+          query_fields = '''
+          query($projectId: ID!) {
+            node(id: $projectId) {
+              ... on ProjectV2 {
+                fields(first:20) {
+                  nodes { id name }
+                }
+              }
+            }
+          }'''
+          r = requests.post(API_URL, headers=HEADERS, json={"query": query_fields, "variables": {"projectId": project_id}})
+          fields = {f["name"]: f["id"] for f in r.json()["data"]["node"]["fields"]["nodes"]}
+
+          query_status_opts = '''
+          query($fieldId: ID!) {
+            node(id: $fieldId) {
+              ... on ProjectV2SingleSelectField {
+                options { id name }
+              }
+            }
+          }'''
+          r = requests.post(API_URL, headers=HEADERS, json={"query": query_status_opts, "variables": {"fieldId": fields["Status"]}})
+          status_opts = {o["name"]: o["id"] for o in r.json()["data"]["node"]["options"]}
+
+          macro_files = glob.glob("macro/*.mac")
+          repo_name = name
+
+          for file_path in macro_files:
+              macro_name = os.path.basename(file_path)
+              job_name = f"{repo_name}-{macro_name}"
+              macro_url = f"https://raw.githubusercontent.com/{REPO}/main/macro/{macro_name}"
+
+              mutation_add = '''
+              mutation($input: AddProjectV2ItemByIdInput!) {
+                addProjectV2ItemById(input: $input) {
+                  item { id }
+                }
+              }'''
+
+              issue_title = f"Run macro {macro_name}"
+              issue_body = f"Job for macro {macro_name}"
+              r = requests.post(f"https://api.github.com/repos/{REPO}/issues", headers=HEADERS, json={"title": issue_title, "body": issue_body})
+              issue_node_id = r.json()["node_id"]
+
+              variables_add = {"input": {"projectId": project_id, "contentId": issue_node_id}}
+              r = requests.post(API_URL, headers=HEADERS, json={"query": mutation_add, "variables": variables_add})
+              item_id = r.json()["data"]["addProjectV2ItemById"]["item"]["id"]
+
+              mutation_update = '''
+              mutation($input: UpdateProjectV2ItemFieldValueInput!) {
+                updateProjectV2ItemFieldValue(input: $input) { projectV2Item { id } }
+              }'''
+
+              def set_field(item_id, field_id, value):
+                  vars = {"input": {"projectId": project_id, "itemId": item_id, "fieldId": field_id, "value": value}}
+                  requests.post(API_URL, headers=HEADERS, json={"query": mutation_update, "variables": vars})
+
+              set_field(item_id, fields["Job name"], {"text": job_name})
+              set_field(item_id, fields["Macro"], {"text": macro_url})
+              set_field(item_id, fields["Container"], {"text": container_url})
+              set_field(item_id, fields["Status"], {"singleSelectOptionId": status_opts["pending"]})
+
+              print(f"Added Project entry for {macro_name}")
+          EOF
