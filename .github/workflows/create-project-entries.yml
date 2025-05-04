@@ -56,7 +56,12 @@ jobs:
               "query": query_project,
               "variables": {"org": ORG, "number": PROJECT_NUMBER}
           })
-          project_id = r.json()["data"]["organization"]["projectV2"]["id"]
+          response_json = r.json()
+          print("DEBUG project query response:", response_json)
+          if "data" not in response_json or response_json["data"]["organization"]["projectV2"] is None:
+              raise RuntimeError(f"❌ Failed to get project ID for {ORG} project number {PROJECT_NUMBER}. Full response: {response_json}")
+          project_id = response_json["data"]["organization"]["projectV2"]["id"]
+          
 
           # Ottieni IDs campi del Project
           query_fields = '''
