@@ -46,12 +46,22 @@ jobs:
           container_url = f"https://github.com/{REPO}/pkgs/container/{REPO.split('/')[1]}"
 
           # Ottieni Project ID (organization-level)
-          query_project = '''
-          query($org: String!, $number: Int!) {
+          # query_project = '''
+          # query($org: String!, $number: Int!) {
+          #   organization(login: $org) {
+          #     projectV2(number: $number) { id }
+          #   }
+          # }'''
+          query_project = """\
+          query ($org: String!, $number: Int!) {
             organization(login: $org) {
-              projectV2(number: $number) { id }
+              projectV2(number: $number) {
+                id
+              }
             }
-          }'''
+          }
+          """
+          
           r = requests.post(API_URL, headers=HEADERS, json={
               "query": query_project,
               "variables": {"org": ORG, "number": PROJECT_NUMBER}
