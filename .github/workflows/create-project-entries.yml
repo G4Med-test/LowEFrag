@@ -2,10 +2,14 @@ name: Create Project Entries from Macros
 
 on:
   workflow_run:
-    workflows: ["apptainer-run-unit"]
-    types:
-      - completed
+    workflows: ["Pull and Run Apptainer Container unit test"]
+    types: [completed]
   workflow_dispatch:
+    inputs:
+      dummy:
+        description: "Manually start"
+        required: false
+        default: ""
 
 jobs:
   populate-project:
