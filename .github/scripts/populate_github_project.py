@@ -44,7 +44,12 @@ query($projectId: ID!) {
   node(id: $projectId) {
     ... on ProjectV2 {
       fields(first:50) {
-        nodes { id name }
+        nodes {
+          ... on ProjectV2FieldCommon {
+            id
+            name
+          }
+        }
       }
     }
   }
