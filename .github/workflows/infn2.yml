@@ -1,10 +1,10 @@
 name: test apptainer infn
 
 on:
-  push:
-    branches:
-      - main
-
+  workflow_run:
+    workflows: ["Apptainer Build and Deploy"]
+    types:
+      - completed
 jobs:
   run-on-apptainer:
     # Specifica che questo job deve girare su un runner self-hosted
