@@ -35,14 +35,14 @@ jobs:
         id: g4data-cache
         uses: actions/cache@v4
         with:
-          path: /tmp/g4data
+          path: /home/runner/g4data
           key: geant4-data-v1
 
       - name: Download Geant4 data libraries (if cache miss) using geant4-config
         if: steps.g4data-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p /tmp/g4data
-          singularity exec -B /tmp/g4data:/opt/geant4/data LowEFrag.sif \
+          singularity exec -B /home/runner/g4data:/tmp/geant4/data LowEFrag.sif \
           bash -c "geant4-config --install-datasets"
 
           
@@ -50,7 +50,7 @@ jobs:
         run: |
           echo "Running container..."
           singularity exec \
-          -B /tmp/g4data:/opt/geant4/data:ro \
+          -B /home/runner/g4data:/tmp/geant4/data:ro \
           LowEFrag.sif \
           /workspace/build/LowEFrag /workspace/macro/unit.mac
 
