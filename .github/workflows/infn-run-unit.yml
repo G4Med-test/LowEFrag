@@ -1,4 +1,4 @@
-name: Pull and Run Apptainer Container unit test
+name: Test INFN runner
 
 on:
   workflow_run:
