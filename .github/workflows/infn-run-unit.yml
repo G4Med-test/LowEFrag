@@ -9,17 +9,8 @@ on:
 jobs:
   pull-and-run-container:
     runs-on: aiinfn-runner-g4
-    permissions:
-      contents: read
-      packages: read
 
-    container:
-      image: carlomt/apptainer:1.3.2
-      options: --privileged
-
-    name: Pull and Run Container
     steps:
-
       - name: Set tag and repo lowercase
         id: setup
         run: |
