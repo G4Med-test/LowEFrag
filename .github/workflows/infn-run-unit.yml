@@ -53,5 +53,3 @@ jobs:
           -B /home/runner/g4data:/tmp/geant4/data:ro \
           LowEFrag.sif \
           /workspace/build/LowEFrag /workspace/macro/unit.mac
-
-
