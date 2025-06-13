@@ -41,7 +41,7 @@ jobs:
       - name: Download Geant4 data libraries (if cache miss) using geant4-config
         if: steps.g4data-cache.outputs.cache-hit != 'true'
         run: |
-          mkdir -p /tmp/g4data
+          mkdir -p /home/runner/g4data
           singularity exec -B /home/runner/g4data:/tmp/geant4/data LowEFrag.sif \
           bash -c "geant4-config --install-datasets"
 
