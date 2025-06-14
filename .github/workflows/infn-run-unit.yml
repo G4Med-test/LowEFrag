@@ -34,9 +34,10 @@ jobs:
             --unsquash \
             -B /home/runner/g4data:/tmp/geant4/data  \
             oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }} \
-            "$@"
+            "\$@"
           EOF
           chmod +x /home/runner/run
+          cat /home/runner/run
           
       - name: Restore Geant4 data from cache
         id: g4data-cache
