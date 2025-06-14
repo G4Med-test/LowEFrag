@@ -27,10 +27,17 @@ jobs:
         run: |
           echo ${{ secrets.GHCR_PAT }} | singularity registry login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
 
-      - name: Pull Container from GHCR
+      - name: Prepare singularity command
         run: |
-          singularity pull /tmp/LowEFrag.sif oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }}
-
+          cat <<EOF > /home/runner/run
+          singularity exec \
+            --unsquash \
+            -B /home/runner/g4data:/tmp/geant4/data  \
+            oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }} \
+            "$@"
+          EOF
+          chmod +x /home/runner/run
+          
       - name: Restore Geant4 data from cache
         id: g4data-cache
         uses: actions/cache@v4
@@ -42,14 +49,10 @@ jobs:
         if: steps.g4data-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p /home/runner/g4data
-          singularity exec -B /home/runner/g4data:/tmp/geant4/data /tmp/LowEFrag.sif \
-          bash -c "geant4-config --install-datasets"
+          /home/runner/run bash -c "geant4-config --install-datasets"
 
           
       - name: Run the container
         run: |
           echo "Running container..."
-          singularity exec \
-          -B /home/runner/g4data:/tmp/geant4/data:ro \
-          /tmp/LowEFrag.sif \
-          /workspace/build/LowEFrag /workspace/macro/unit.mac
+          /home/runner/run /workspace/build/LowEFrag /workspace/macro/unit.mac
