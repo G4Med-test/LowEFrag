@@ -11,7 +11,7 @@ class HistoManager {
  public:
    HistoManager();    
 
-  void Book(); // booking the ROOT file
+  void Book(); // booking the output file
   // void SetOutputFilename(const std::string filename) {fFileName = filename;};
 
    // Destructor: 

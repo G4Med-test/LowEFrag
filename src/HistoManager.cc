@@ -35,7 +35,7 @@ void HistoManager::Book()
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   // analysisManager->SetNtupleMerging(true);
   analysisManager->SetVerboseLevel(1);
-  analysisManager->SetDefaultFileType("root");
+  analysisManager->SetDefaultFileType("xml");
 
   G4String fileName = HistoManagerHelper::Instance()->GetOutFileName();
   

@@ -1,0 +1,82 @@
+name: Run on INFN
+
+on:
+  workflow_run:
+    workflows: ["Apptainer Build and Deploy"]
+    types:
+      - completed
+
+jobs:
+  pull-and-run-container:
+    runs-on: aiinfn-runner-g4
+
+    steps:
+      - name: Set tag and repo lowercase
+        id: setup
+        run: |
+          if [ "${{ github.event.workflow_run.event }}" = "push" ]; then
+            TAG=${{ github.event.workflow_run.head_sha }}
+          else
+            TAG="pr-${{ github.event.workflow_run.pull_requests[0].number }}-${{ github.event.workflow_run.head_sha }}"
+          fi
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "repo_lower=${{ tolower(github.repository) }}" >> $GITHUB_OUTPUT
+
+      - name: Login to GHCR
+        run: |
+          echo ${{ secrets.GHCR_PAT }} | singularity registry login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
+
+      - name: Prepare Apptainer (Singularity) wrapper script
+        run: |
+          mkdir -p /tmp/g4data
+          OUTPUT_DIR_HOST="${RUNNER_TEMP}/outputs"
+
+          RUN_SCRIPT_PATH="${RUNNER_TEMP}/run_apptainer.sh"
+          cat <<EOF > $RUN_SCRIPT_PATH
+          #!/bin/bash
+          apptainer exec \
+            --unsquash \
+            -B /tmp/g4data:/opt/geant4/data \
+            -B ${OUTPUT_DIR_HOST}:/output \
+            oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }} \
+            "\$@"
+          EOF
+          chmod +x $RUN_SCRIPT_PATH
+          
+          echo "Wrapper script created at $RUN_SCRIPT_PATH:"
+          cat $RUN_SCRIPT_PATH
+          
+          echo "RUN_SCRIPT_PATH=$RUN_SCRIPT_PATH" >> $GITHUB_ENV
+
+      - name: Restore Geant4 data from cache
+        id: g4data-cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/g4data
+          key: geant4-data-v1
+
+      - name: Download Geant4 data if cache miss
+        if: steps.g4data-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache miss. Downloading Geant4 datasets..."
+          ${{ env.RUN_SCRIPT_PATH }} bash -c "geant4-config --install-datasets"
+
+      - name: Run simulations and generate outputs
+        run: |
+          OUTPUT_DIR_HOST="${RUNNER_TEMP}/outputs"
+          mkdir -p $OUTPUT_DIR_HOST
+
+          echo "Running simulation for bic.mac..."
+          ${{ env.RUN_SCRIPT_PATH }} bash -c "cd /output && /workspace/build/LowEFrag /workspace/macro/bic.mac"
+
+          echo "Running simulation for incl.mac..."
+          ${{ env.RUN_APP_SCRIPT }} bash -c "cd /output && /workspace/build/LowEFrag /workspace/macro/incl.mac"
+
+          echo "Verifying generated files in ${OUTPUT_DIR_HOST}:"
+          ls -l $OUTPUT_DIR_HOST
+
+      - name: Upload simulation outputs as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulation-outputs
+          path: ${{ runner.temp }}/outputs/
