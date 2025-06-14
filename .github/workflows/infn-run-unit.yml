@@ -29,7 +29,7 @@ jobs:
 
       - name: Pull Container from GHCR
         run: |
-          singularity pull LowEFrag.sif oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }}
+          singularity pull /tmp/LowEFrag.sif oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }}
 
       - name: Restore Geant4 data from cache
         id: g4data-cache
@@ -42,7 +42,7 @@ jobs:
         if: steps.g4data-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p /home/runner/g4data
-          singularity exec -B /home/runner/g4data:/tmp/geant4/data LowEFrag.sif \
+          singularity exec -B /home/runner/g4data:/tmp/geant4/data /tmp/LowEFrag.sif \
           bash -c "geant4-config --install-datasets"
 
           
@@ -51,5 +51,5 @@ jobs:
           echo "Running container..."
           singularity exec \
           -B /home/runner/g4data:/tmp/geant4/data:ro \
-          LowEFrag.sif \
+          /tmp/LowEFrag.sif \
           /workspace/build/LowEFrag /workspace/macro/unit.mac
