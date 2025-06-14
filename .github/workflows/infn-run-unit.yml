@@ -36,6 +36,7 @@ jobs:
             oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }} \
             "\$@"
           EOF
+          mkdir -p /tmp/g4data
           chmod +x /home/runner/run
           cat /home/runner/run
           
