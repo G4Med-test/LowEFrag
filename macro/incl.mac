@@ -21,7 +21,7 @@
 /process/inactivate ionElastic
 #
 #
-/histoManager/setFileName incl
+/histoManager/setFileName /outputs/incl.xml
 #
 /run/printProgress 10000
 #
