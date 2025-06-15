@@ -52,7 +52,7 @@ jobs:
         id: g4data-cache
         uses: actions/cache@v4
         with:
-          path: /tmp/g4data
+          path: /home/runner/g4data
           key: geant4-data-v1
 
       - name: Download Geant4 data if cache miss
