@@ -1,4 +1,4 @@
-name: Test INFN runner
+name: Test INFN runner unit
 
 on:
   workflow_run:
