@@ -1,4 +1,4 @@
-name: Test INFN runner unit2 - ${{ github.event.workflow_run.head_commit.message }}
+name: Test INFN runner unit2
 
 on:
   workflow_run:
