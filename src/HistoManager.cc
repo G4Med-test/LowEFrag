@@ -19,7 +19,7 @@ HistoManager::HistoManager()  :
   fOn(false)//,
   // fFileName("out.root")
 {
-  G4cout<<"HistoManager::HistoManager()"<<G4endl;
+  // G4cout<<"HistoManager::HistoManager()"<<G4endl;
   // fMessenger = new HistoManagerMessenger(this);
 
 }
@@ -39,7 +39,7 @@ void HistoManager::Book()
 
   G4String fileName = HistoManagerHelper::Instance()->GetOutFileName();
   
-  G4cout<<"Opening outputfile: "<<fileName<<G4endl;
+  // G4cout<<"Opening outputfile: "<<fileName<<G4endl;
   G4bool fileOpen = analysisManager->OpenFile(fileName);
   if (!fileOpen) {
     G4cout << "\n---> HistoManager::Book(): cannot open " 
@@ -152,11 +152,11 @@ void HistoManager::Book()
 						 thisHistoProperties[0],
 						 thisHistoProperties[1],
 						 thisHistoProperties[2]);
-	  G4cout<<"Creating histogram "<<hname<<" with id: "<<thisId
-		<<" n bin: "<< thisHistoProperties[0]
-		<<" x min: "<< thisHistoProperties[1]
-		<<" x max: "<< thisHistoProperties[2]	    	    
-		<<G4endl;
+	  // G4cout<<"Creating histogram "<<hname<<" with id: "<<thisId
+	  // 	<<" n bin: "<< thisHistoProperties[0]
+	  // 	<<" x min: "<< thisHistoProperties[1]
+	  // 	<<" x max: "<< thisHistoProperties[2]	    	    
+	  // 	<<G4endl;
 	  HistoIds.insert(std::make_pair(hname,thisId));
 	}//end loop on angles
   
@@ -164,9 +164,9 @@ void HistoManager::Book()
   
   fOn = true;
   
-  G4cout << "\n----> Output file is open in " 
-         << analysisManager->GetFileName() << "." 
-         << analysisManager->GetFileType() << G4endl;
+  // G4cout << "\n----> Output file is open in " 
+  //        << analysisManager->GetFileName() << "." 
+  //        << analysisManager->GetFileType() << G4endl;
 }
 
 
@@ -239,7 +239,7 @@ void HistoManager::Finish()
     manager -> Write();
     manager -> CloseFile();  
 
-    G4cout << "\n----> Histograms saved\n" << G4endl;      
+    // G4cout << "\n----> Histograms saved\n" << G4endl;      
 
     //delete G4AnalysisManager::Instance();
     fOn = false;
