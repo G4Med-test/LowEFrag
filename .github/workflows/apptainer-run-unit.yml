@@ -1,4 +1,4 @@
-name: Pull and Run Apptainer Container unit test
+name: Container unit test
 
 on:
   workflow_run:

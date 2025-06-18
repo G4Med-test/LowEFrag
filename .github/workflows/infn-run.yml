@@ -1,8 +1,8 @@
-name: Test INFN runner long
+name: INFN runner long
 
 on:
   workflow_run:
-    workflows: ["Apptainer Build and Deploy"]
+    workflows: ["INFN run unit"]
     types:
       - completed
 

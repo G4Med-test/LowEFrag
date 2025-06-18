@@ -1,8 +1,8 @@
-name: Test INFN runner unit
+name: INFN run unit
 
 on:
   workflow_run:
-    workflows: ["Apptainer Build and Deploy"]
+    workflows: ["Container unit test"]
     types:
       - completed
 
@@ -33,9 +33,11 @@ jobs:
           singularity exec \
             --unsquash \
             -B /tmp/g4data:/opt/geant4/data  \
+            -B /tmp/runner/_work:/home/runner/_work \
             oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }} \
             "\$@"
           EOF
+          mkdir -p /tmp/runner/_work
           mkdir -p /tmp/g4data
           chmod +x /home/runner/run
           cat /home/runner/run
@@ -44,7 +46,7 @@ jobs:
         id: g4data-cache
         uses: actions/cache@v4
         with:
-          path: /home/runner/g4data
+          path: /tmp/g4data
           key: geant4-data-v1
 
       - name: Download Geant4 data libraries (if cache miss) using geant4-config
@@ -55,5 +57,6 @@ jobs:
           
       - name: Run the container
         run: |
+          nproc
           echo "Running container..."
           /home/runner/run /workspace/build/LowEFrag /workspace/macro/unit.mac
