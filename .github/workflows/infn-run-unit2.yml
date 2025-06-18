@@ -33,9 +33,11 @@ jobs:
           singularity exec \
             --unsquash \
             -B /tmp/g4data:/opt/geant4/data  \
+            -B /tmp/runner/_work:/home/runner/_work \
             oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }} \
             "\$@"
           EOF
+          mkdir -p /tmp/runner/_work
           mkdir -p /tmp/g4data
           chmod +x /home/runner/run
           cat /home/runner/run
@@ -55,5 +57,6 @@ jobs:
           
       - name: Run the container
         run: |
+          nproc
           echo "Running container..."
           /home/runner/run /workspace/build/LowEFrag /workspace/macro/unit.mac

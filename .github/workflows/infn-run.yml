@@ -33,10 +33,12 @@ jobs:
           singularity exec \
             --unsquash \
             -B /tmp/g4data:/opt/geant4/data  \
+            -B /tmp/runner/_work:/home/runner/_work \
             -B /tmp/outputs:/outputs \
             oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }} \
             "\$@"
           EOF
+          mkdir -p /tmp/runner/_work
           mkdir -p /tmp/g4data
           mkdir -p /tmp/outputs
           chmod +x /home/runner/run
@@ -59,6 +61,7 @@ jobs:
         run: |
           echo "Running container..."
           /home/runner/run /workspace/build/LowEFrag /workspace/macro/bic.mac
+          /home/runner/run /workspace/build/LowEFrag /workspace/macro/incl.mac          
 
       - name: Upload simulation outputs as artifact
         uses: actions/upload-artifact@v4
