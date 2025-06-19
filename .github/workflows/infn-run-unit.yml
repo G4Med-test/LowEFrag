@@ -23,18 +23,17 @@ jobs:
         run: |
           echo ${{ secrets.GHCR_PAT }} | singularity registry login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
 
-      # - name: Pull Container from GHCR
-      #  run: |
-      #    singularity pull LowEFrag.sif oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }}
+      - name: Pull Container from GHCR
+        run: |
+          singularity build --sandbox /tmp/runner oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }}
           
       - name: Prepare singularity command
         run: |
           cat <<EOF > /home/runner/run
           singularity exec \
-            --unsquash \
             -B /cvmfs/geant4.cern.ch/share/data:/opt/geant4/data  \
             -B /tmp/runner/_work:/home/runner/_work \
-            oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }} \
+            /tmp/runner \
             "\$@"
           EOF
           mkdir -p /tmp/runner/_work
