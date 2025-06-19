@@ -57,4 +57,4 @@ jobs:
         run: |
           nproc
           echo "Running container..."
-          cd /tmp/runner && run /workspace/build/LowEFrag /workspace/macro/unit.mac
+          cd /tmp/runner && ./run /workspace/build/LowEFrag /workspace/macro/unit.mac
