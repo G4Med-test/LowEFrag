@@ -1,0 +1,51 @@
+name: INFN run unit apptainer
+
+on:
+  workflow_run:
+    workflows: ["Container unit test"]
+    types:
+      - completed
+
+jobs:
+  pull-and-run-container:
+    runs-on: aiinfn-runner-g4
+
+    steps:
+      - name: Set tag and repo lowercase
+        id: setup
+        run: |
+          TAG=${{ github.event.workflow_run.head_sha }}
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          echo "repo_lower=$REPO_LOWER" >> $GITHUB_OUTPUT
+
+      - name: Login to GHCR
+        run: |
+          echo ${{ secrets.GHCR_PAT }} | apptainer registry login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
+
+      - name: Pull Container from GHCR
+        run: |
+          apptainer pull /tmp/runner/LowEFrag.sif oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }}
+          
+      - name: Prepare apptainer command
+        run: |
+          cat <<EOF > /tmp/runner/run
+          apptainer exec \
+            --unsquash \
+            -B /cvmfs/geant4.cern.ch/share/data:/opt/geant4/data  \
+            /tmp/runner/LowEFrag.sif \
+            "\$@"
+          EOF
+          chmod +x /tmp/runner/run
+          cat /tmp/runner/run
+      
+      - name: Check cvmfs
+        run: |
+          ls /cvmfs/geant4.cern.ch
+          /tmp/runner/run bash -c "geant4-config --check-datasets"
+      
+      - name: Run the container
+        run: |
+          nproc
+          echo "Running container..."
+          cd /tmp/runner && run /workspace/build/LowEFrag /workspace/macro/unit.mac
