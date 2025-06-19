@@ -11,6 +11,14 @@ jobs:
     runs-on: aiinfn-runner-g4
 
     steps:
+
+      - name: Set Apptainer Cache and Temp Directories
+        run: |
+          mkdir -p /tmp/apptainer_cache
+          mkdir -p /tmp/apptainer_tmp
+          echo "APPTAINER_CACHEDIR=/tmp/apptainer_cache" >> $GITHUB_ENV
+          echo "APPTAINER_TMPDIR=/tmp/apptainer_tmp" >> $GITHUB_ENV
+      
       - name: Set tag and repo lowercase
         id: setup
         run: |
