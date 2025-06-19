@@ -32,33 +32,20 @@ jobs:
           cat <<EOF > /home/runner/run
           singularity exec \
             --unsquash \
-            -B /tmp/g4data:/opt/geant4/data  \
+            -B /cvmfs/geant4.cern.ch/share/data:/opt/geant4/data  \
             -B /tmp/runner/_work:/home/runner/_work \
             oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }} \
             "\$@"
           EOF
           mkdir -p /tmp/runner/_work
-          mkdir -p /tmp/g4data
           chmod +x /home/runner/run
           cat /home/runner/run
       
       - name: Check cvmfs
         run: |
           ls /cvmfs/geant4.cern.ch
-    
-      - name: Restore Geant4 data from cache
-        id: g4data-cache
-        uses: actions/cache@v4
-        with:
-          path: /tmp/g4data
-          key: geant4-data-v1
-
-      - name: Download Geant4 data libraries (if cache miss) using geant4-config
-        if: steps.g4data-cache.outputs.cache-hit != 'true'
-        run: |
-          /home/runner/run bash -c "geant4-config --install-datasets"
-
-          
+          /home/runner/run bash -c "geant4-config --check-datasets"
+      
       - name: Run the container
         run: |
           nproc
