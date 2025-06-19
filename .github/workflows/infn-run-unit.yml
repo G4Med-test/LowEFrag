@@ -41,7 +41,11 @@ jobs:
           mkdir -p /tmp/g4data
           chmod +x /home/runner/run
           cat /home/runner/run
-          
+      
+      - name: Check cvmfs
+        run: |
+          ls /cvmfs/geant4.cern.ch
+    
       - name: Restore Geant4 data from cache
         id: g4data-cache
         uses: actions/cache@v4
