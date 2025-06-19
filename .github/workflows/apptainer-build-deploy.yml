@@ -26,11 +26,7 @@ jobs:
       - name: Set build tag
         id: set_tag
         run: |
-          if [ "${{ github.event_name }}" = "push" ]; then
-            echo "tag=${GITHUB_SHA}" >> $GITHUB_OUTPUT
-          else
-            echo "tag=pr-${{ github.event.pull_request.number }}-${GITHUB_SHA}" >> $GITHUB_OUTPUT
-          fi
+          echo "tag=${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
       - name: Build Container
         run: |
