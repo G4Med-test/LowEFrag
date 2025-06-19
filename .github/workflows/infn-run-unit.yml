@@ -25,7 +25,7 @@ jobs:
 
       - name: Pull Container from GHCR
         run: |
-          singularity build --sandbox /tmp/runner oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }}
+          singularity build --sandbox /tmp/container oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }}
           
       - name: Prepare singularity command
         run: |
@@ -33,7 +33,7 @@ jobs:
           singularity exec \
             -B /cvmfs/geant4.cern.ch/share/data:/opt/geant4/data  \
             -B /tmp/runner/_work:/home/runner/_work \
-            /tmp/runner \
+            /tmp/container \
             "\$@"
           EOF
           mkdir -p /tmp/runner/_work

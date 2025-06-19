@@ -33,8 +33,7 @@ jobs:
         run: |
           cat <<EOF > /home/runner/run
           singularity exec \
-            --unsquash \
-            -B /cvmfs/geant4.cern.ch/share/data:/opt/geant4/data  \            
+            -B /cvmfs/geant4.cern.ch/share/data:/opt/geant4/data  \
             -B /tmp/runner/_work:/home/runner/_work \
             -B /tmp/outputs:/outputs \
             /tmp/container \
