@@ -13,17 +13,12 @@ jobs:
     outputs:
       macro_files: ${{ steps.list-macros.outputs.all_macros }}
     steps:
-      - name: Set tmp directory
-        run: |
-          mkdir -p /tmp/repo
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          path: /tmp/repo
       - name: List macro files
         id: list-macros
         run: |
-          MACRO_FILES=$(find /tmp/repo/macro/ -name "*.mac" -type f -printf '%P\n' | jq -R -s -c 'split("\n")[:-1]')
+          MACRO_FILES=$(find macro/ -name "*.mac" -type f -printf '%P\n' | jq -R -s -c 'split("\n")[:-1]')
           echo "all_macros=$MACRO_FILES" >> $GITHUB_OUTPUT
           echo "Found macros: $MACRO_FILES"
 
