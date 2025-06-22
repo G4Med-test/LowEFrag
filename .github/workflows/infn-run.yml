@@ -15,13 +15,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: List macro files
         id: list-macros
         run: |
           MACRO_FILES=$(find macro/ -name "*.mac" -type f -printf '%P\n' | jq -R -s -c 'split("\n")[:-1]')
           echo "all_macros=$MACRO_FILES" >> $GITHUB_OUTPUT
-          echo "Found macros: $MACRO_FILES"
 
+      - name: Upload macro files
+        uses: actions/upload-artifact@v4
+        with:
+          name: macro-files
+          path: macro/*.mac
+
+          
   pull-and-run-container:
     needs: get-macros
     runs-on: aiinfn-runner-g4
@@ -31,11 +38,13 @@ jobs:
         macro: ${{ fromJson(needs.get-macros.outputs.macro_files) }}
 
     steps:
+      - name: Download macro files
+        uses: actions/download-artifact@v4
+        with:
+          name: macro-files
       - name: Set Apptainer Cache and Temp Directories
         run: |
-          mkdir -p /tmp/apptainer_cache
-          mkdir -p /tmp/apptainer_tmp
-          mkdir -p /tmp/runner
+          mkdir -p /tmp/apptainer_cache /tmp/apptainer_tmp /tmp/runner
           echo "APPTAINER_CACHEDIR=/tmp/apptainer_cache" >> $GITHUB_ENV
           echo "APPTAINER_TMPDIR=/tmp/apptainer_tmp" >> $GITHUB_ENV
           
@@ -65,7 +74,7 @@ jobs:
           apptainer exec \
             --unsquash \
             -B /cvmfs/geant4.cern.ch/share/data:/opt/geant4/data \
-            -B "${{ github.workspace }}:/app_repo" \
+            -B "${{ github.workspace }}:/repo" \
             /tmp/runner/LowEFrag.sif \
             "\$@"
           EOF
@@ -77,11 +86,11 @@ jobs:
           
       - name: Run the container with macro ${{ matrix.macro }}
         run: |
-          echo "Attempting to check file: /app_repo/${{ matrix.macro }}"
-          /tmp/runner/run bash -c "ls -l /app_repo/"
-          /tmp/runner/run bash -c "cat /app_repo/${{ matrix.macro }} | head -n 5"
+          echo "Attempting to check file: /repo/${{ matrix.macro }}"
+          /tmp/runner/run bash -c "ls -l /repo/"
+          /tmp/runner/run bash -c "cat /repo/${{ matrix.macro }} | head -n 5"
           echo "Running container with macro: ${{ matrix.macro }}"
-          cd /tmp/runner && ./run /workspace/build/LowEFrag /app_repo/${{ matrix.macro }}
+          cd /tmp/runner && ./run /workspace/build/LowEFrag /repo/${{ matrix.macro }}
           
       - name: Upload simulation outputs as artifactAdd commentMore actions
         uses: actions/upload-artifact@v4
