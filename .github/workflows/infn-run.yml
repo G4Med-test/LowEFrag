@@ -57,7 +57,10 @@ jobs:
           
       - name: Prepare apptainer command
         run: |
-          ls ${{ github.workspace }}
+          echo "Contents of ${{ github.workspace }}:"
+          ls -l ${{ github.workspace }}
+          echo "Contents of ${{ github.workspace }}/macro/:"
+          ls -l ${{ github.workspace }}/macro/
           cat <<EOF > /tmp/runner/run
           apptainer exec \
             --unsquash \
