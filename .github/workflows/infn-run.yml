@@ -68,13 +68,11 @@ jobs:
         run: |
           echo "Contents of ${{ github.workspace }}:"
           ls -l ${{ github.workspace }}
-          echo "Contents of ${{ github.workspace }}/macro/:"
-          ls -l ${{ github.workspace }}/macro/
           cat <<EOF > /tmp/runner/run
           apptainer exec \
             --unsquash \
             -B /cvmfs/geant4.cern.ch/share/data:/opt/geant4/data \
-            -B "${{ github.workspace }}:/repo" \
+            -B "${{ github.workspace }}:/macro" \
             /tmp/runner/LowEFrag.sif \
             "\$@"
           EOF
@@ -86,11 +84,8 @@ jobs:
           
       - name: Run the container with macro ${{ matrix.macro }}
         run: |
-          echo "Attempting to check file: /repo/${{ matrix.macro }}"
-          /tmp/runner/run bash -c "ls -l /repo/"
-          /tmp/runner/run bash -c "cat /repo/${{ matrix.macro }} | head -n 5"
           echo "Running container with macro: ${{ matrix.macro }}"
-          cd /tmp/runner && ./run /workspace/build/LowEFrag /repo/${{ matrix.macro }}
+          cd /tmp/runner && ./run /workspace/build/LowEFrag /macro/${{ matrix.macro }}
           
       - name: Upload simulation outputs as artifactAdd commentMore actions
         uses: actions/upload-artifact@v4
