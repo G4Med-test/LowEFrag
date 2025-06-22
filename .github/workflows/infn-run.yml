@@ -57,6 +57,7 @@ jobs:
           
       - name: Prepare apptainer command
         run: |
+          ls ${{ github.workspace }}
           cat <<EOF > /tmp/runner/run
           apptainer exec \
             --unsquash \
@@ -73,6 +74,9 @@ jobs:
           
       - name: Run the container with macro ${{ matrix.macro }}
         run: |
+          echo "Attempting to check file: /app_repo/${{ matrix.macro }}"
+          /tmp/runner/run bash -c "ls -l /app_repo/"
+          /tmp/runner/run bash -c "cat /app_repo/${{ matrix.macro }} | head -n 5"
           echo "Running container with macro: ${{ matrix.macro }}"
           cd /tmp/runner && ./run /workspace/build/LowEFrag /app_repo/${{ matrix.macro }}
           
