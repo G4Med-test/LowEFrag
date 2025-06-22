@@ -90,5 +90,9 @@ jobs:
       - name: Upload simulation outputs as artifactAdd commentMore actions
         uses: actions/upload-artifact@v4
         with:
-          name: simulation-outputs
-          path: /tmp/outputs/    
+          name: output-${{ matrix.macro }}
+          path: /tmp/outputs/
+
+      - name: Cleanup
+        run: |
+          rm -rf /tmp/runner /tmp/apptainer_*
