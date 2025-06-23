@@ -73,7 +73,7 @@ jobs:
             --unsquash \
             -B /cvmfs/geant4.cern.ch/share/data:/opt/geant4/data \
             -B "${{ github.workspace }}:/macro" \
-            -B "/outputs/:/tmp/outputs/" \
+            -B "/tmp/outputs/:/outputs/" \
             /tmp/runner/LowEFrag.sif \
             "\$@"
           EOF
