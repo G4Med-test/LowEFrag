@@ -11,7 +11,7 @@
 #
 /physics/setIonInelasticProcess bic
 #
-#/run/numberOfThreads 1
+/run/numberOfThreads 1
 #
 /run/initialize
 #
