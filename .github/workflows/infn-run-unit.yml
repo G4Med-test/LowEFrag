@@ -29,24 +29,24 @@ jobs:
           
       - name: Prepare singularity command
         run: |
-          cat <<EOF > /home/runner/run
+          cat <<EOF > /tmp/runner/run
           singularity exec \
             -B /cvmfs/geant4.cern.ch/share/data:/opt/geant4/data  \
-            -B /tmp/runner/_work:/home/runner/_work \
+            -B /tmp/runner/_work:/tmp/runner/_work \
             /tmp/container \
             "\$@"
           EOF
           mkdir -p /tmp/runner/_work
-          chmod +x /home/runner/run
-          cat /home/runner/run
+          chmod +x /tmp/runner/run
+          cat /tmp/runner/run
       
       - name: Check cvmfs
         run: |
           ls /cvmfs/geant4.cern.ch
-          /home/runner/run bash -c "geant4-config --check-datasets"
+          /tmp/runner/run bash -c "geant4-config --check-datasets"
       
       - name: Run the container
         run: |
           nproc
           echo "Running container..."
-          /home/runner/run /workspace/build/LowEFrag /workspace/macro/unit.mac
+          /tmp/runner/run /workspace/build/LowEFrag /workspace/macro/unit.mac

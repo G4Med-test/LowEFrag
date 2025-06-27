@@ -8,7 +8,8 @@ on:
 
 jobs:
   get-macros:
-    runs-on: aiinfn-runner-g4    
+    runs-on: aiinfn-runner-g4
+    
     if: ${{ github.event.workflow_run.conclusion == 'success' }}    
     outputs:
       macro_files: ${{ steps.list-macros.outputs.all_macros }}
