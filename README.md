@@ -61,6 +61,6 @@ singularity pull oras://ghcr.io/g4med-test/lowefrag:<tag>
 |------------------------------------|----------------------------------------------------|
 | **Apptainer Build and Deploy**     | Automatically builds the container and publishes it to GHCR on push to master. |
 | **Pull and Run Apptainer Container unit test** | Pulls the built container and runs it with test macro files after build completion. |
-| **INFN |
+| **INFN** |
 
 ---
