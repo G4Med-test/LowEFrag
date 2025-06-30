@@ -56,5 +56,8 @@ jobs:
       - name: Run the container
         run: |
           nproc
+          cat /proc/self/status | grep Cpus_allowed_list
+          lscpu
+          grep ^processor /proc/cpuinfo | wc -l
           echo "Running container..."
           cd /tmp/runner && ./run /workspace/build/LowEFrag /workspace/macro/unit.mac
