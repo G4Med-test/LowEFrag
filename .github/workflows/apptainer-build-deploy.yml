@@ -28,10 +28,16 @@ jobs:
         run: |
           echo "tag=${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
+      - name: Set SIF filename
+        id: set_sif
+        run: |
+          sif_file=$(echo "${{ github.repository }}" | awk -F/ '{print $2}')  # estrae solo "LowEFrag"
+          echo "sif=${sif_file}.sif" >> $GITHUB_OUTPUT
+
       - name: Build Container
         run: |
           repo_lower=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')        
-          apptainer build ${repo_lower}.sif Apptainer.def
+          apptainer build ${{ steps.set_sif.outputs.sif }} Apptainer.def
 
       - name: Login to GHCR
         run: |
@@ -41,4 +47,4 @@ jobs:
         run: |
           repo_lower=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           echo "Pushing to: oras://ghcr.io/${repo_lower}:${{ steps.set_tag.outputs.tag }}"
-          apptainer push containers/${repo_lower}.sif oras://ghcr.io/${repo_lower}:${{ steps.set_tag.outputs.tag }}
+          apptainer push containers/${{ steps.set_sif.outputs.sif }} oras://ghcr.io/${repo_lower}:${{ steps.set_tag.outputs.tag }}
