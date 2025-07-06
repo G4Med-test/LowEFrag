@@ -19,7 +19,7 @@ From: carlomt/geant4:11.2.2-almalinux9
 
 %post
     mkdir build && cd build
-    cmake /source
+    cmake ../source
     make -j$(nproc)
 
 %runscript
