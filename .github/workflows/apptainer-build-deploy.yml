@@ -30,15 +30,16 @@ jobs:
 
       - name: Build Container
         run: |
+          repo_lower=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')        
           cd containers
-          singularity build LowEFrag.sif Apptainer.def
+          apptainer build ${repo_lower}.sif Apptainer.def
 
       - name: Login to GHCR
         run: |
-          echo ${{ secrets.GHCR_PAT }} | singularity registry login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
+          echo ${{ secrets.GHCR_PAT }} | apptainer registry login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
 
       - name: Push Container to GHCR
         run: |
           repo_lower=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           echo "Pushing to: oras://ghcr.io/${repo_lower}:${{ steps.set_tag.outputs.tag }}"
-          singularity push containers/LowEFrag.sif oras://ghcr.io/${repo_lower}:${{ steps.set_tag.outputs.tag }}
+          apptainer push containers/${repo_lower}.sif oras://ghcr.io/${repo_lower}:${{ steps.set_tag.outputs.tag }}

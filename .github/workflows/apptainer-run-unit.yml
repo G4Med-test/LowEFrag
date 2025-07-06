@@ -47,16 +47,18 @@ jobs:
         if: steps.g4data-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p /tmp/g4data
-          singularity exec --unsquash -B /tmp/g4data:/opt/geant4/data LowEFrag.sif \
+          apptainer exec --unsquash -B /tmp/g4data:/opt/geant4/data \
+          ${{ steps.setup.outputs.repo_lower }}.sif \
           bash -c "geant4-config --install-datasets"
 
           
       - name: Run the container
         run: |
           echo "Running container..."
-          singularity run \
+          apptainer run \
           --unsquash \
           -B /tmp/g4data:/opt/geant4/data \
-          LowEFrag.sif /workspace/macro/unit.mac
+          ${{ steps.setup.outputs.repo_lower }}.sif \
+          /workspace/macro/unit.mac
 
 
