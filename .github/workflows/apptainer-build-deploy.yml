@@ -44,5 +44,7 @@ jobs:
 
       - name: Push Container to GHCR
         run: |
-          echo "Pushing to: oras://ghcr.io/${{ steps.set_sif.outputs.sif }}:${{ steps.set_tag.outputs.tag }}"
-          apptainer push ${{ steps.set_sif.outputs.sif }} oras://ghcr.io/${{ steps.set_sif.outputs.sif }}:${{ steps.set_tag.outputs.tag }}
+          repo_lower=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          echo "Pushing to: oras://ghcr.io/${repo_lower}:${{ steps.set_tag.outputs.tag }}"
+          apptainer push ${{ steps.set_sif.outputs.sif }} oras://ghcr.io/${repo_lower}:${{ steps.set_tag.outputs.tag }}
+          
