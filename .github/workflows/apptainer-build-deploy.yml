@@ -31,7 +31,6 @@ jobs:
       - name: Build Container
         run: |
           repo_lower=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')        
-          cd containers
           apptainer build ${repo_lower}.sif Apptainer.def
 
       - name: Login to GHCR
