@@ -11,10 +11,7 @@ From: carlomt/geant4:11.3.2-almalinux9
     . /source
 
 %environment
-    export G4DATA_DIR=/g4data
-    export G4INSTALL=/usr/local
-    export LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH
-    export CMAKE_PREFIX_PATH=/usr/local:$CMAKE_PREFIX_PATH
+    source /usr/local/bin/geant4.sh
 
 %post
     mkdir build && cd build
