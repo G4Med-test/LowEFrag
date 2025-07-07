@@ -87,7 +87,8 @@ jobs:
           if echo "$OUTPUT" | grep -q NOTFOUND; then
            echo "❌ ERROR: One or more required Geant4 datasets are missing."
            echo "$OUTPUT" | grep NOTFOUND
-          exit 1          
+           exit 1          
+          fi
           
       - name: Run the container
         run: |
