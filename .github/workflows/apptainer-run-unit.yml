@@ -59,15 +59,20 @@ jobs:
           ${{ steps.set_sif.outputs.sif }} \
           bash -c "geant4-config --install-datasets"
 
-          
-      - name: Run the container
+      - name: List contents of /tmp/g4data
         run: |
-          echo "Checking datasets..."
+          ls -lh /tmp/g4data
+          
+      - name: List contents of /g4data
+        run: |
           apptainer run \
           --unsquash \
           -B /tmp/g4data:/g4data:ro \
           ${{ steps.set_sif.outputs.sif }} \
-          bash -c "ls /g4data && geant4-config --check-datasets"
+          bash -c "ls /g4data && geant4-config --check-datasets"          
+          
+      - name: Run the container
+        run: |
           echo "Running container..."
           apptainer run \
           --unsquash \
