@@ -24,5 +24,4 @@ From: carlomt/geant4:11.3.2-almalinux9
 
 %runscript
     echo "Running LowEFrag simulation..."
-    source /usr/local/bin/geant4.sh
     /usr/local/bin/LowEFrag "$@"
