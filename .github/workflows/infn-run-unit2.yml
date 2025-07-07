@@ -41,7 +41,7 @@ jobs:
           cat <<EOF > /tmp/runner/run
           apptainer exec \
             --unsquash \
-            -B /cvmfs/geant4.cern.ch/share/data:/opt/geant4/data  \
+            -B /cvmfs/geant4.cern.ch/share/data:/g4data  \
             /tmp/runner/LowEFrag.sif \
             "\$@"
           EOF
@@ -60,4 +60,4 @@ jobs:
           lscpu
           grep ^processor /proc/cpuinfo | wc -l
           echo "Running container..."
-          cd /tmp/runner && ./run /workspace/build/LowEFrag /workspace/macro/unit.mac
+          cd /tmp/runner && ./run /workspace/macro/unit.mac

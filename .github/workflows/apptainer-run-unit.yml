@@ -55,7 +55,7 @@ jobs:
         if: steps.g4data-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p /tmp/g4data
-          apptainer exec --unsquash -B /tmp/g4data:/opt/geant4/data \
+          apptainer exec --unsquash -B /tmp/g4data:/g4data \
           ${{ steps.set_sif.outputs.sif }} \
           bash -c "geant4-config --install-datasets"
 
@@ -65,7 +65,7 @@ jobs:
           echo "Running container..."
           apptainer run \
           --unsquash \
-          -B /tmp/g4data:/opt/geant4/data \
+          -B /tmp/g4data:/g4data \
           ${{ steps.set_sif.outputs.sif }} \
           /workspace/macro/unit.mac
 

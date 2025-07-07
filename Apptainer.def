@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: carlomt/geant4:11.2.2-almalinux9
+From: carlomt/geant4:11.3.2-almalinux9
 
 %labels
     Author Carlo Mancini
@@ -11,17 +11,17 @@ From: carlomt/geant4:11.2.2-almalinux9
     . /source
 
 %environment
-    export PATH=/opt/geant4/bin:$PATH
-    export LD_LIBRARY_PATH=/opt/geant4/lib:$LD_LIBRARY_PATH
-    export G4DATA_DIR=/opt/geant4/data
-    export G4INSTALL=/opt/geant4
-    export LOWEFRAG_HOME=/workspace
+    export G4DATA_DIR=/g4data
+    export G4INSTALL=/usr/local
+    export LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH
+    export CMAKE_PREFIX_PATH=/usr/local:$CMAKE_PREFIX_PATH
 
 %post
     mkdir build && cd build
     cmake ../source
     make -j$(nproc)
+    make install
 
 %runscript
     echo "Running LowEFrag simulation..."
-    /workspace/build/LowEFrag "$@"
+    /usr/local/bin/LowEFrag "$@"

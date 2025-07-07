@@ -39,11 +39,11 @@ jobs:
       - name: Prepare singularity command
         run: |
           cat <<EOF > /tmp/runner/run
-          singularity exec \
-            -B /cvmfs/geant4.cern.ch/share/data:/opt/geant4/data  \
-            -B /tmp/runner/_work:/tmp/runner/_work \
-            /tmp/container \
-            "\$@"
+          apptainer run \
+          -B /cvmfs/geant4.cern.ch/share/data:/g4data  \
+          -B /tmp/runner/_work:/tmp/runner/_work \
+          /tmp/container \
+          "\$@"
           EOF
           mkdir -p /tmp/runner/_work
           chmod +x /tmp/runner/run
@@ -58,4 +58,4 @@ jobs:
         run: |
           nproc
           echo "Running container..."
-          /tmp/runner/run /workspace/build/LowEFrag /workspace/macro/unit.mac
+          /tmp/runner/run /workspace/macro/unit.mac
