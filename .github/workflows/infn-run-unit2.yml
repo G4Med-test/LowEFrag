@@ -17,6 +17,7 @@ jobs:
           mkdir -p /tmp/apptainer_cache
           mkdir -p /tmp/apptainer_tmp
           mkdir -p /tmp/runner
+          mkdir -p /tmp/repo          
           echo "APPTAINER_CACHEDIR=/tmp/apptainer_cache" >> $GITHUB_ENV
           echo "APPTAINER_TMPDIR=/tmp/apptainer_tmp" >> $GITHUB_ENV
       
@@ -28,6 +29,17 @@ jobs:
           REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           echo "repo_lower=$REPO_LOWER" >> $GITHUB_OUTPUT
 
+      - name: Set SIF filename
+        id: set_sif
+        run: |
+          sif_file=$(echo "${{ github.repository }}" | awk -F/ '{print $2}')  
+          echo "sif=${sif_file}.sif" >> $GITHUB_OUTPUT
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: /tmp/repo
+          
       - name: Login to GHCR
         run: |
           echo ${{ secrets.GHCR_PAT }} | apptainer registry login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
@@ -51,8 +63,12 @@ jobs:
       - name: Check cvmfs
         run: |
           ls /cvmfs/geant4.cern.ch
-          /tmp/runner/run bash -c "geant4-config --check-datasets"
-      
+          apptainer exec \
+          -B /cvmfs/geant4.cern.ch/share/data:/g4data  \
+          -B /tmp/runner/_work:/tmp/runner/_work \
+          /tmp/container \
+          bash -c "geant4-config --check-datasets"
+          
       - name: Run the container
         run: |
           nproc
@@ -60,4 +76,9 @@ jobs:
           lscpu
           grep ^processor /proc/cpuinfo | wc -l
           echo "Running container..."
-          cd /tmp/runner && ./run /workspace/macro/unit.mac
+          cd /tmp/runner && \
+          apptainer run \
+          -B /cvmfs/geant4.cern.ch/share/data:/g4data  \
+          -B /tmp/runner/_work:/tmp/runner/_work \
+          ${{ steps.set_sif.outputs.sif }} \
+          $GITHUB_WORKSPACE/macro/unit.mac          

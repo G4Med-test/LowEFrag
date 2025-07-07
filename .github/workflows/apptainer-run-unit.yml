@@ -31,17 +31,19 @@ jobs:
       - name: Set SIF filename
         id: set_sif
         run: |
-          sif_file=$(echo "${{ github.repository }}" | awk -F/ '{print $2}')  # estrae solo "LowEFrag"
+          sif_file=$(echo "${{ github.repository }}" | awk -F/ '{print $2}')  
           echo "sif=${sif_file}.sif" >> $GITHUB_OUTPUT
 
+      - name: Checkout repository
+        uses: actions/checkout@v4          
           
       - name: Login to GHCR
         run: |
-          echo ${{ secrets.GHCR_PAT }} | singularity registry login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
+          echo ${{ secrets.GHCR_PAT }} | apptainer registry login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
 
       - name: Pull Container from GHCR
         run: |
-          singularity pull ${{ steps.set_sif.outputs.sif }} \
+          apptainer pull ${{ steps.set_sif.outputs.sif }} \
           oras://ghcr.io/${{ steps.setup.outputs.repo_lower }}:${{ steps.setup.outputs.tag }}
 
       - name: Restore Geant4 data from cache
@@ -49,7 +51,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/g4data
-          key: geant4-data-v2
+          key: geant4-data-v1
 
       - name: Download Geant4 data libraries (if cache miss) using geant4-config
         if: steps.g4data-cache.outputs.cache-hit != 'true'
@@ -65,7 +67,7 @@ jobs:
           
       - name: List contents of /g4data
         run: |
-          apptainer run \
+          apptainer exec \
           --unsquash \
           -B /tmp/g4data:/g4data:ro \
           ${{ steps.set_sif.outputs.sif }} \
@@ -78,6 +80,6 @@ jobs:
           --unsquash \
           -B /tmp/g4data:/g4data:ro \
           ${{ steps.set_sif.outputs.sif }} \
-          /workspace/macro/unit.mac
+          $GITHUB_WORKSPACE/macro/unit.mac
 
 
