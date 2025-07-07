@@ -11,7 +11,10 @@ From: carlomt/geant4:11.3.2-almalinux9
     . /source
 
 %environment
-    source /usr/local/bin/geant4.sh
+    export G4DATA_DIR=/g4data
+    export G4INSTALL=/usr/local
+    export LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH
+    export CMAKE_PREFIX_PATH=/usr/local:$CMAKE_PREFIX_PATH
 
 %post
     mkdir build && cd build
@@ -21,4 +24,5 @@ From: carlomt/geant4:11.3.2-almalinux9
 
 %runscript
     echo "Running LowEFrag simulation..."
+    source /usr/local/bin/geant4.sh
     /usr/local/bin/LowEFrag "$@"
