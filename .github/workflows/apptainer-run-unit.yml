@@ -71,7 +71,23 @@ jobs:
           --unsquash \
           -B /tmp/g4data:/g4data:ro \
           ${{ steps.set_sif.outputs.sif }} \
-          bash -c "ls /g4data && geant4-config --check-datasets"          
+          bash -c "ls /g4data"
+
+      - name: Check Geant4 datasets (fail if any NOTFOUND)
+        run: |
+          echo "Checking Geant4 datasets..."
+          OUTPUT=$(apptainer exec \
+          --unsquash \
+          -B /tmp/g4data:/g4data:ro \
+          ${{ steps.set_sif.outputs.sif }} \
+          bash -c "geant4-config --check-datasets")
+
+          echo "$OUTPUT"
+
+          if echo "$OUTPUT" | grep -q NOTFOUND; then
+           echo "❌ ERROR: One or more required Geant4 datasets are missing."
+           echo "$OUTPUT" | grep NOTFOUND
+          exit 1          
           
       - name: Run the container
         run: |
