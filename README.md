@@ -1,6 +1,8 @@
 # G4LowEFrag
 
 **Validation of Geant4 against nuclear fragmentation data**
+[![Apptainer Build and Deploy](https://github.com/G4Med-test/LowEFrag/actions/workflows/apptainer-build-deploy.yml/badge.svg)](https://github.com/G4Med-test/LowEFrag/actions/workflows/apptainer-build-deploy.yml)
+[![Container unit test](https://github.com/G4Med-test/LowEFrag/actions/workflows/apptainer-run-unit.yml/badge.svg)](https://github.com/G4Med-test/LowEFrag/actions/workflows/apptainer-run-unit.yml)
 
 ---
 
