@@ -2,12 +2,13 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "main" ]
   workflow_dispatch:
 
 jobs:
+  # JOB 1: Costruzione e Deploy
   build:
     name: Build & Deploy
     uses: G4Med-test/ci-workflows/.github/workflows/apptainer-build-deploy.yml@main
@@ -16,8 +17,10 @@ jobs:
       packages: write
     with:
       apptainer_def: "Apptainer.def"
-      image_name: "LowEFrag.sif"
+      # Il nome del .sif è uguale al nome del repository
+      image_name: "${{ github.event.repository.name }}.sif"
 
+  # JOB 2: Unit Test
   unit-test:
     name: Unit Test
     needs: build
@@ -26,5 +29,5 @@ jobs:
       contents: read
       packages: read
     with:
-      image_name: "LowEFrag.sif"
+      image_name: "${{ github.event.repository.name }}.sif"
       macro_file: "macro/unit.mac"
