@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-apptainer:
-    uses: G4Med-test/ci-workflows/.github/workflows/apptainer-build-deploy.yml.yml@master
+    uses: G4Med-test/ci-workflows/.github/workflows/apptainer-build-deploy.yml@master
     with:
       apptainer_def: "container/LowEFrag.def"
       image_name: "LowEFrag.sif"
