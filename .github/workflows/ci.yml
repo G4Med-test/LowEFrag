@@ -8,26 +8,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  # JOB 1: Costruzione e Deploy
-  build:
-    name: Build & Deploy
-    uses: G4Med-test/ci-workflows/.github/workflows/apptainer-build-deploy.yml@main
+  run-pipeline:
+    uses: G4Med-test/ci-workflows/.github/workflows/pipeline.yml@main
     permissions:
       contents: read
       packages: write
     with:
-      apptainer_def: "Apptainer.def"
-      # Il nome del .sif è uguale al nome del repository
       image_name: "${{ github.event.repository.name }}.sif"
-
-  # JOB 2: Unit Test
-  unit-test:
-    name: Unit Test
-    needs: build
-    uses: G4Med-test/ci-workflows/.github/workflows/run-unit.yml@main
-    permissions:
-      contents: read
-      packages: read
-    with:
-      image_name: "${{ github.event.repository.name }}.sif"
-      macro_file: "macro/unit.mac"
