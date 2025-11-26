@@ -13,6 +13,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+    secrets: inherit
     with:
       apptainer_def: "Apptainer.def"
       image_name: "LowEFrag.sif"
