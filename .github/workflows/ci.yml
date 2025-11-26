@@ -1,0 +1,13 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  build-apptainer:
+    uses: G4Med-test/ci-workflows/.github/workflows/build-apptainer.yml@master
+    with:
+      apptainer_def: "container/LowEFrag.def"
+      image_name: "LowEFrag.sif"
