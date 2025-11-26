@@ -9,7 +9,7 @@ else()
     get_filename_component(MY_PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 endif()
 
-project(${MY_PROJECT_NAME} CXX)
+project("${MY_PROJECT_NAME}" CXX)
 
 set(CMAKE_CXX_STANDARD 17) 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

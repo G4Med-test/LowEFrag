@@ -10,7 +10,7 @@ From: carlomt/geant4:{{ TAG }}
     Author Carlo Mancini
     Email mancinit@infn.it
     Project {{ PROJECT_NAME }}
-    Description "Apptainer container for LowEFrag G4-Med test"
+    Description "Apptainer container for {{ PROJECT_NAME }}"
 
 %files
     . /source
@@ -20,13 +20,15 @@ From: carlomt/geant4:{{ TAG }}
     export G4INSTALL=/usr/local
     export LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH
     export CMAKE_PREFIX_PATH=/usr/local:$CMAKE_PREFIX_PATH
+    # Aggiungiamo il bin al path così possiamo chiamare l'eseguibile ovunque
+    export PATH=/usr/local/bin:$PATH
 
 %post
     mkdir build && cd build
-    cmake -DPROJECT_NAME_OVERRIDE="${PROJECT_NAME}" ../source
+    cmake -DPROJECT_NAME_OVERRIDE="{{ PROJECT_NAME }}" ../source
     make -j$(nproc)
     make install
 
 %runscript
     echo "Running {{ PROJECT_NAME }} simulation..."
-    /usr/local/bin/LowEFrag "$@"
+    /usr/local/bin/{{ PROJECT_NAME }} "$@"
