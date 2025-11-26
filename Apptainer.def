@@ -1,10 +1,15 @@
 Bootstrap: docker
-From: carlomt/geant4:11.3.2-almalinux9
+From: carlomt/geant4:{{ TAG }}
+
+%arguments
+    # Default values
+    TAG=11.3.2-almalinux9
+    PROJECT_NAME=G4TestGeneric
 
 %labels
     Author Carlo Mancini
     Email mancinit@infn.it
-    Project LowEFrag
+    Project {{ PROJECT_NAME }}
     Description "Apptainer container for LowEFrag G4-Med test"
 
 %files
@@ -23,5 +28,5 @@ From: carlomt/geant4:11.3.2-almalinux9
     make install
 
 %runscript
-    echo "Running LowEFrag simulation..."
+    echo "Running {{ PROJECT_NAME }} simulation..."
     /usr/local/bin/LowEFrag "$@"
