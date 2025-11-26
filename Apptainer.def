@@ -23,7 +23,7 @@ From: carlomt/geant4:{{ TAG }}
 
 %post
     mkdir build && cd build
-    cmake ../source
+    cmake -DPROJECT_NAME_OVERRIDE="${PROJECT_NAME}" ../source
     make -j$(nproc)
     make install
 
