@@ -60,10 +60,5 @@ singularity pull oras://ghcr.io/g4med-test/lowefrag:<tag>
 ---
 
 ## ✅ GitHub Actions workflows
-| Workflow name                      | Description                                        |
-|------------------------------------|----------------------------------------------------|
-| **Apptainer Build and Deploy**     | Automatically builds the container and publishes it to GHCR on push to master. |
-| **Pull and Run Apptainer Container unit test** | Pulls the built container and runs it with test macro files after build completion. |
-| **INFN** |
-
----
+the workflow is now defined in a dedicated repo:
+[url]https://github.com/G4Med-test/ci-workflows/[/url]
