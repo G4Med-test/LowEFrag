@@ -45,7 +45,7 @@
 #include "DetectorConstruction.hh"
 #include "PhysicsList.hh"
 #include "ActionInitialization.hh"
-#include "SteppingVerbose.hh"
+// #include "SteppingVerbose.hh"
 
 #include "G4UIExecutive.hh"
 #include "G4VisExecutive.hh"
@@ -71,7 +71,7 @@ int main(int argc,char** argv) {
   runManager->SetNumberOfThreads(nThreads);
 #else
   //my Verbose output class
-  G4VSteppingVerbose::SetInstance(new SteppingVerbose);
+  // G4VSteppingVerbose::SetInstance(new SteppingVerbose);
   G4RunManager* runManager = new G4RunManager;
 #endif
 
