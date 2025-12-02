@@ -1,22 +1,25 @@
 # $Id$
 #
-# Macro file for "Hadr03.cc"
+# Macro file for "LowEFrag"
 # (can be run in batch, without graphic)
 #
-# list process
 #
 /control/verbose 0
 /run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/process/verbose 0
+/process/setVerbose 0
 #
 #
 /physics/setIonInelasticProcess incl
 #
-#/run/numberOfThreads 16
+# /run/numberOfThreads 16
 #
 /run/initialize
 #
 #
-#/process/list
+# /process/list
 # /process/inactivate hadElastic
 /process/inactivate ionElastic
 #
@@ -25,4 +28,5 @@
 #
 /run/printProgress 100000
 #
-/run/beamOn 1000000
+# /run/beamOn 1000000
+/run/beamOn 10000
