@@ -23,8 +23,8 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file Hadr03.cc
-/// \brief Main program of the hadronic/Hadr03 example
+/// \file main.cc
+/// \brief Main program of the LowEFrag test
 //
 //
 //
