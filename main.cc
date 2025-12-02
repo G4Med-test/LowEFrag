@@ -27,7 +27,6 @@
 /// \brief Main program of the LowEFrag test
 //
 //
-//
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
