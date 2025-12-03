@@ -12,7 +12,7 @@
 #
 /physics/setIonInelasticProcess bic
 #
-# /run/numberOfThreads 16
+/run/numberOfThreads 64
 #
 /run/initialize
 #
@@ -26,7 +26,7 @@
 #
 /run/printProgress 100000
 #
-# /run/beamOn 1000000
-/run/beamOn 100000
+/run/beamOn 1000000
+#/run/beamOn 100000
 
 
