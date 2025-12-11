@@ -2,6 +2,10 @@
 ####### History File #######
 ############################
 
+11.12.2025: C. Mancini LowEFrag-V10-07-01
+ - changed main name and CMakeLists to match G4Med-test
+ - removed G4VSteppingVerbose
+
 17.11.2021: S. Guatelli LowEFrag-V10-07-01
 - G4AnalysisManager.hh substitutes g4root.hh
 - Default analysis output file set to root file
