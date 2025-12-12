@@ -53,7 +53,7 @@ apptainer run   -B /path/to/geant4_data:/opt/geant4/data   LowEFrag.sif <macrofi
 
 ### ➡️ Pull the latest container:
 ```bash
-singularity pull oras://ghcr.io/g4med-test/lowefrag:<tag>
+apptainer pull oras://ghcr.io/g4med-test/lowefrag:<tag>
 ```
 > Replace `<tag>` with the desired release tag or commit hash.
 
