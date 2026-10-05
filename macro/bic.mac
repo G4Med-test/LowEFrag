@@ -22,7 +22,7 @@
 /process/inactivate ionElastic
 #
 #
-/histoManager/setFileName /outputs/bic.xml
+/histoManager/setFileName /outputs/bic.root
 #
 /run/printProgress 100000
 #

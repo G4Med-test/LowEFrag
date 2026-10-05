@@ -41,8 +41,26 @@ apptainer build LowEFrag.sif Apptainer.def
 
 Geant4 datasets are located externally, mount them:
 ```bash
-apptainer run   -B /path/to/geant4_data:/opt/geant4/data   LowEFrag.sif <macrofile>
+apptainer run -B /path/to/geant4_data:/g4data:ro LowEFrag.sif <macrofile>
 ```
+
+---
+
+## 📈 Comparison plots
+
+`analysis/plot.py` compares one or more runs with the experimental data in
+`analysis/expData/`, reading the ROOT files with uproot (no ROOT installation).
+Each run is the macro and the ROOT file it produced; normalization is the one of
+`validation/parser.py`, used for the portal JSON. It needs
+[ci-workflows](https://github.com/G4Med-test/ci-workflows) checked out next to
+this repository (or `G4MED_TOOLS` pointing to its `validation/` directory):
+
+```bash
+pip install -r analysis/requirements.txt
+python3 analysis/plot.py macro/bic.mac:out/bic.root macro/incl.mac:out/incl.root --output plot
+```
+
+One PDF per isotope is written in `plot/`, with one panel per angle.
 
 ---
 

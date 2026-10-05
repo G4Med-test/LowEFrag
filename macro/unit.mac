@@ -15,6 +15,6 @@
 /process/inactivate ionElastic
 #
 #
-/histoManager/setFileName unit
+/histoManager/setFileName unit.root
 ##
 /run/beamOn 1
