@@ -19,5 +19,6 @@ jobs:
     permissions:
       contents: read
       packages: write
+      actions: write
     with:
       geant4_tag: ${{ inputs.geant4_tag }}
