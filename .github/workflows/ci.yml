@@ -20,5 +20,6 @@ jobs:
       contents: read
       packages: write
       actions: write
+    secrets: inherit
     with:
       geant4_tag: ${{ inputs.geant4_tag }}
