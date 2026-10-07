@@ -3,7 +3,7 @@ From: ghcr.io/g4med-test/geant4-alma9:{{ TAG }}
 
 %arguments
     # Default values
-    TAG=v11.4.3
+    TAG=v11.3.2
     PROJECT_NAME=LowEFrag
 
 %labels
